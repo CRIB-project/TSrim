@@ -10,7 +10,7 @@
 #include <string.h>
 #include <assert.h>
 #define G__DICTIONARY
-#include "RConfig.h"
+#include "ROOT/RConfig.hxx"
 #include "TClass.h"
 #include "TDictAttributeMap.h"
 #include "TInterpreter.h"
@@ -68,10 +68,10 @@ namespace ROOT {
    }
    TGenericClassInfo *GenerateInitInstance(const ::TSrim*)
    {
-      return GenerateInitInstanceLocal((::TSrim*)nullptr);
+      return GenerateInitInstanceLocal(static_cast<::TSrim*>(nullptr));
    }
    // Static variable to force the class initialization
-   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const ::TSrim*)nullptr); R__UseDummy(_R__UNIQUE_DICT_(Init));
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal(static_cast<const ::TSrim*>(nullptr)); R__UseDummy(_R__UNIQUE_DICT_(Init));
 } // end of namespace ROOT
 
 //______________________________________________________________________________
@@ -131,14 +131,14 @@ namespace ROOT {
    }
    // Wrapper around operator delete
    static void delete_TSrim(void *p) {
-      delete ((::TSrim*)p);
+      delete (static_cast<::TSrim*>(p));
    }
    static void deleteArray_TSrim(void *p) {
-      delete [] ((::TSrim*)p);
+      delete [] (static_cast<::TSrim*>(p));
    }
    static void destruct_TSrim(void *p) {
       typedef ::TSrim current_t;
-      ((current_t*)p)->~current_t();
+      (static_cast<current_t*>(p))->~current_t();
    }
 } // end of namespace ROOT for class ::TSrim
 
@@ -157,7 +157,7 @@ namespace ROOT {
       vector<TF1> *ptr = nullptr;
       static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(vector<TF1>));
       static ::ROOT::TGenericClassInfo 
-         instance("vector<TF1>", -2, "vector", 493,
+         instance("vector<TF1>", -2, "vector", 348,
                   typeid(vector<TF1>), ::ROOT::Internal::DefineBehavior(ptr, ptr),
                   &vectorlETF1gR_Dictionary, isa_proxy, 0,
                   sizeof(vector<TF1>) );
@@ -168,15 +168,15 @@ namespace ROOT {
       instance.SetDestructor(&destruct_vectorlETF1gR);
       instance.AdoptCollectionProxyInfo(TCollectionProxyInfo::Generate(TCollectionProxyInfo::Pushback< vector<TF1> >()));
 
-      ::ROOT::AddClassAlternate("vector<TF1>","std::__1::vector<TF1, std::__1::allocator<TF1> >");
+      instance.AdoptAlternate(::ROOT::AddClassAlternate("vector<TF1>","std::__1::vector<TF1, std::__1::allocator<TF1>>"));
       return &instance;
    }
    // Static variable to force the class initialization
-   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const vector<TF1>*)nullptr); R__UseDummy(_R__UNIQUE_DICT_(Init));
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal(static_cast<const vector<TF1>*>(nullptr)); R__UseDummy(_R__UNIQUE_DICT_(Init));
 
    // Dictionary for non-ClassDef classes
    static TClass *vectorlETF1gR_Dictionary() {
-      TClass* theClass =::ROOT::GenerateInitInstanceLocal((const vector<TF1>*)nullptr)->GetClass();
+      TClass* theClass =::ROOT::GenerateInitInstanceLocal(static_cast<const vector<TF1>*>(nullptr))->GetClass();
       vectorlETF1gR_TClassManip(theClass);
    return theClass;
    }
@@ -189,21 +189,21 @@ namespace ROOT {
 namespace ROOT {
    // Wrappers around operator new
    static void *new_vectorlETF1gR(void *p) {
-      return  p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) vector<TF1> : new vector<TF1>;
+      return  p ? ::new(static_cast<::ROOT::Internal::TOperatorNewHelper*>(p)) vector<TF1> : new vector<TF1>;
    }
    static void *newArray_vectorlETF1gR(Long_t nElements, void *p) {
-      return p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) vector<TF1>[nElements] : new vector<TF1>[nElements];
+      return p ? ::new(static_cast<::ROOT::Internal::TOperatorNewHelper*>(p)) vector<TF1>[nElements] : new vector<TF1>[nElements];
    }
    // Wrapper around operator delete
    static void delete_vectorlETF1gR(void *p) {
-      delete ((vector<TF1>*)p);
+      delete (static_cast<vector<TF1>*>(p));
    }
    static void deleteArray_vectorlETF1gR(void *p) {
-      delete [] ((vector<TF1>*)p);
+      delete [] (static_cast<vector<TF1>*>(p));
    }
    static void destruct_vectorlETF1gR(void *p) {
       typedef vector<TF1> current_t;
-      ((current_t*)p)->~current_t();
+      (static_cast<current_t*>(p))->~current_t();
    }
 } // end of namespace ROOT for class vector<TF1>
 
@@ -214,8 +214,8 @@ namespace {
 nullptr
     };
     static const char* includePaths[] = {
-"/opt/homebrew/Cellar/root/6.26.06_2/include/root",
-"/Users/hayakawa/Dropbox/hayakawa/calc/srim/SRIM-2013/root_class/",
+"/Users/hayakawa/Downloads/root/root_install/include/",
+"/Users/hayakawa/Library/CloudStorage/Dropbox/hayakawa/calc/srim/SRIM-2013/TSrim/",
 nullptr
     };
     static const char* fwdDeclCode = R"DICTFWDDCLS(
