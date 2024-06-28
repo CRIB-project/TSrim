@@ -36,7 +36,8 @@ my $elend = 'U';
 #my @mat = ('air');
 #my @mat = ('c','cd2','kapton','au');
 #my @mat = ('au','he_90_co2_10');
-my @mat = ('ar','mo','cu','3he');
+#my @mat = ('ar','mo','cu','3he');
+my @mat = ('ti','be','ni','anthracene');
 
 # Directory and mass table file name
 my $dir = 'range';
