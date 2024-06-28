@@ -55,7 +55,7 @@ namespace ROOT {
       ::TSrim *ptr = nullptr;
       static ::TVirtualIsAProxy* isa_proxy = new ::TInstrumentedIsAProxy< ::TSrim >(nullptr);
       static ::ROOT::TGenericClassInfo 
-         instance("TSrim", ::TSrim::Class_Version(), "TSrim.h", 3,
+         instance("TSrim", ::TSrim::Class_Version(), "TSrim.h", 5,
                   typeid(::TSrim), ::ROOT::Internal::DefineBehavior(ptr, ptr),
                   &::TSrim::Dictionary, isa_proxy, 4,
                   sizeof(::TSrim) );

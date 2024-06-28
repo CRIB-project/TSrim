@@ -1,3 +1,5 @@
+#ifndef __TSRIM
+#define __TSRIM
 #include <TF1.h>
 
 class TSrim: public std::vector<TF1>{
@@ -58,3 +60,5 @@ private:
 
   ClassDef(TSrim,1);
 };
+
+#endif

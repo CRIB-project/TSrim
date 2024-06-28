@@ -331,8 +331,9 @@ void TSrim::ShowMatListZAN(){
   for(Int_t i=0; i<this->size(); i++){
     Bool_t exitFlag = false;
     mat = this->at(i).GetName();
-    Z = stoi(mat(0, mat.First("-")-1));
-    A = stoi(mat(mat.First("-")+1, mat.First("_")-1));
+    Z = stoi(mat(0, mat.First("-")));
+    A = stoi(mat(mat.First("-")+1, mat.First("_")-mat.First("-")-1));
+    N = A - Z;
     mat = mat(mat.First("_")+1, mat.Length()-mat.First("_"));
     if(i==0){
       Zmin = Zmax = Z;
@@ -371,8 +372,9 @@ void TSrim::ShowMatListZAN(){
       cout << "Too many materials" << endl;
       break;
     }
-    cout << Form("%s, Z: %d-%d, N: %d-%d, A: %d-%d",
-		 matlist[k].Data(), Zmin, Zmax, Nmin, Nmax, Amin, Amax)
+    cout << Form("%s, Z: %d(%s)-%d(%s), N: %d-%d, A: %d-%d", 
+		 matlist[k].Data(), Zmin, GetEl(Zmin), Zmax, GetEl(Zmax),
+		 Nmin, Nmax, Amin, Amax)
 	 << endl;
   }
 }
