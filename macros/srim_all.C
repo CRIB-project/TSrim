@@ -1,1 +1,2 @@
-TSrim *srim=load_srim_all();
+#include "load_srim.C"
+TSrim *srim_all=load_srim();
