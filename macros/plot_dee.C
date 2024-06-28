@@ -1,9 +1,10 @@
 #include <Mass.h>
 #include <TSrim.h>
-//R__LOAD_LIBRARY(/usr/local/lib/libtsrim.so);
+//R__LOAD_LIBRARY(/usr/local/lib/libSrim.so);
 /* const Int_t npol = 16; */
 /* TString filename = Form("range_fit/range_fit_pol%d_",npol); */
 /* TString fileext = "txt"; */
+TString range_dir = "/usr/local/share/range_fit";
 
 struct isotope{
   Int_t Z;
@@ -17,8 +18,8 @@ void plot_dee(Double_t th_de, Double_t th_e, vector<struct isotope> itlist,
   TH1F *fr1=gPad->DrawFrame(0,0,dEmax,Etotmax);
   fr1->Draw();
 
-  gSystem->Load("libtsrim.so");
-  TSrim *srim=new TSrim("si",16,"../range_fit/range_fit_pol16_si.txt",
+  gSystem->Load("libSrim.so");
+  TSrim *srim=new TSrim("si",16,Form("%s/range_fit_pol16_si.txt",range_dir.Data()),
 			1,1,20,40);
 
   Double_t Estep = 0.01;
