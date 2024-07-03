@@ -1,15 +1,16 @@
 # Overview
-TSrim is a ROOT class inherited from TF1, which enables us to calculate range or energy loss of a specified isotope in a material based on the SRIM range calculation.
+TSrim is a ROOT class inherited from TF1, which enables us to calculate range or energy loss of a specified nuclide in a material based on the SRIM range calculation.
 
-Instead of directly reading a SRIM's range output file and performing interpolation everytime it is called, TSrim treats a polynomial function which fits to the log(Energy) vs log(Range) calculated by SRIM.
+Instead of directly reading a SRIM's range output file and performing interpolation everytime it is called, TSrim treats a polynomial function which fits to the log(Energy) vs log(Range) relation provided by SRIM.
 
-We recommend the polynomial dgree of 16, and fitted parameter files for many materials are already available (in SR\ Module/range/*/range_fit_pol16_*.txt).
+We recommend the polynomial dgree of 16, which guarantees the deviation from the original range values by SRIM mostly less than 1%, and still fast enough for calculations.
+Fit parameter files for a number of materials are already available (in SR\ Module/range/*/range_fit_pol16_*.txt).
 
 # Configuration and Install
-Users need to specify some relevant directory and file names in the Makefile which are used by _make install_ and some macros.
-- **DIRLIB**: Library directory which ROOT can access.
-The dynamic library files (libSrim.so, TSrimDict_rdict.pcm and libMass.so) will be copied there.
-- **DIRINC**: Include directory which ROOT can access. The header files (TSrim.h and Mass.h) will be copied there.
+Users need to specify some relevant directory and file names in the Makefile which are used by _make install_.
+- **DIRLIB**: Library directory which ROOT can access, where
+to copy the dynamic library files (libSrim.so, TSrimDict_rdict.pcm and libMass.so).
+- **DIRINC**: Include directory which ROOT can access. where to copy the header files (TSrim.h and Mass.h).
 - **DIRRANGE_ORG**: Range data directory
 - **DIRRANGE**: The directory where fit parameter files are stored. The macro file load_srim.C loads the range fit parameter files from there.
 - **RANGES**: Specifies fit parameter files to be copied to DIRRANGE/.
