@@ -17,10 +17,10 @@ The dynamic library files (libSrim.so, TSrimDict_rdict.pcm and libMass.so) will 
 - **MACROS**: macro file names to be copied to DIRMACRO/.
 - **DIRMACRO**: Macro directory where ROOT can access.
 
-DIRLIB and DIRMACRO should be defined in `.rootrc`
+DIRLIB and DIRMACRO should be defined in your `.rootrc`
 as Unix.*.Root.DynamicPath and Unix.*.Root.MacroPath so that ROOT can access them.
 
-DIRINC should be defined in
+DIRINC should be defined in your
 `.rootlogon.C`
 by
 > gInterpreter->AddIncludePath("/usr/local/include");
@@ -50,7 +50,7 @@ On the ROOT interpreter,
 
 > (double) 1.0492494   // Returned value
 
-## Advanced usage
+## Useful usage
 A macro `load_srim.C` defines some useful functions to treat multiple range fit files. For example,
 > root [0] .L load_srim.C
 
