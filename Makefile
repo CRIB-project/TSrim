@@ -9,7 +9,8 @@ DIRMACRO_ORG = ./macros
 
 MACROS = $(DIRMACRO_ORG)/load_srim.C $(DIRMACRO_ORG)/srim_all.C \
 	$(DIRMACRO_ORG)/srim_light.C $(DIRMACRO_ORG)/srim_mid.C \
-	$(DIRMACRO_ORG)/srim_cribpid.C $(DIRMACRO_ORG)/srim_basic.C
+	$(DIRMACRO_ORG)/srim_cribpid.C $(DIRMACRO_ORG)/srim_basic.C \
+	$(DIRMACRO_ORG)/plot_dee.C
 DIRMACRO = /usr/local/macros
 ###################### Edit above ######################
 
