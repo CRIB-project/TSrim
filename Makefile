@@ -38,11 +38,11 @@ clean:
 	rm -f $(TAR2).o
 
 install: lib$(TAR1).so T$(TAR1)Dict_rdict.pcm T$(TAR1).h $(RANGES) $(MACROS)
-	cp -fp lib$(TAR1).so T$(TAR1)Dict_rdict.pcm $(DIRLIB)
-	cp -fp T$(TAR1).h $(DIRINC)
-	cp -fp $(RANGES) $(DIRRANGE)
-	cp -fp $(MACROS) $(DIRMACRO)
+	cp -fpv lib$(TAR1).so T$(TAR1)Dict_rdict.pcm $(DIRLIB)
+	cp -fpv T$(TAR1).h $(DIRINC)
+	cp -fpv $(RANGES) $(DIRRANGE)
+	cp -fpv $(MACROS) $(DIRMACRO)
 
 install-$(TAR2): lib$(TAR2).so $(TAR2).h
-	cp -fp lib$(TAR2).so $(DIRLIB)
-	cp -fp $(TAR2).h $(DIRINC)
+	cp -fpv lib$(TAR2).so $(DIRLIB)
+	cp -fpv $(TAR2).h $(DIRINC)
