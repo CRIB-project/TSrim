@@ -24,9 +24,9 @@ using namespace std;
   Mass number: A
   Material name: mat (he, mylar, etc.)
 
-  Log(Range) vs Log(E) plots are fitted by pol10
+  Log(Range) vs Log(E) plots are fitted by poynomial function
   Applicable for Emin - Emax
-  Parameter file format: z a mat par0 - par10 Mean(fit dev) Std dev(fit dev)
+  Parameter file format: z a mat par0 - par16 Mean(fit dev) Std dev(fit dev)
 */
 
 ClassImp(TSrim);

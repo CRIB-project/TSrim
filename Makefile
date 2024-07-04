@@ -18,7 +18,7 @@ TAR1 = Srim
 TAR2 = Mass
 
 CXX           = g++
-CXXFLAGS      = -std=c++20 #-O2 -pipe -Wall -W -Woverloaded-virtual
+CXXFLAGS      = -std=c++11 #-O2 -pipe -Wall -W -Woverloaded-virtual
 
 ROOTCONFIG = $(ROOTSYS)/bin/root-config
 ROOTCLING = $(ROOTSYS)/bin/rootcling
