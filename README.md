@@ -1,10 +1,25 @@
 # Overview
-TSrim is a ROOT class inherited from TF1, which enables us to calculate range or energy loss of a specified nuclide in a material based on the SRIM range calculation.
+TSrim is a ROOT class inherited from TF1, which enables us to calculate range or energy loss of an ion in a material based on the SRIM range table.
 
-Instead of directly reading a SRIM's range output file and performing interpolation everytime it is called, TSrim treats a polynomial function which fits to the log(Energy) vs log(Range) relation provided by SRIM.
+Instead of directly reading a SRIM's range output file and performing interpolation everytime it is called, TSrim treats a polynomial function which fits to the log(Energy) vs log(Range) table of a specified ion-target pair provided by SRIM.
 
-We recommend the polynomial dgree of 16, which guarantees the deviation from the original range values by SRIM mostly less than 1%, and still fast enough for calculations.
-Fit parameter files for a number of materials are already available (in SR\ Module/range/*/range_fit_pol16_*.txt).
+We recommend the polynomial dgree of 16 for the moment, which guarantees the deviation from the original range values by SRIM mostly less than 1%, and still fast enough to repeat calculations. Fit parameter files for a number of materials are already available (in SR\ Module/range/*/range_fit_pol16_*.txt). 
+
+### Units and material information
+- Thickness and range in mm
+- Energy in MeV
+- Energy per nucleon in MeV/u
+- Temperatire in K
+- Pressure in Torr
+- Available material list (as of 04-July-2024)
+  - "3he", "air", "al", "anthracene", "ar", "au",
+  "be", "butane", "c", "cd2", "ch2", "cu",
+  "h", "havar", "he", "he_90_co2_10", "kapton", "mo",
+  "mylar", "ni", "si", "ti"
+  - Minimum energy = 1 keV
+  - Maximum energy per nucleon = 400 MeV/u
+  - 1H to 243U (SRIM does not treat beyond Uranium)
+
 
 # Configuration and Install
 Users need to specify some relevant directory and file names in the Makefile which are used by _make install_.
@@ -43,13 +58,17 @@ If Makefile fails, please edit it for your environments.
 # Usage
 ## Most basic example
 On the ROOT interpreter, 
-> root [0] .L (DIRLIB/)libSrim.so   // Load the library 
+> root [0] .L (DIRLIB/)libSrim.so   
+(Load the library) 
 
-> root [1] TSrim *srim=new TSrim("si",16,"(DIRRANGE)/range_fit_pol16_si.txt")   // Define a pointer
+> root [1] TSrim *srim=new TSrim("si",16,"(DIRRANGE)/range_fit_pol16_si.txt")   
+(Define a pointer)
 
-> root [2] srim->Range(2,4,50,"si")   // The pointer can return values by the member functions
+> root [2] srim->Range(2,4,50,"si")   
+(The pointer can return values by the member functions)
 
-> (double) 1.0492494   // Returned value
+> (double) 1.0492494   
+(Returned value in mm)
 
 ## Useful usage
 A macro `load_srim.C` defines some useful functions to treat multiple range fit files. For example,
@@ -84,18 +103,36 @@ Please include `#include <Mass.h>` and `#include <TSrim.h>` and load `gSystem->L
 An example macro `plot_dee.C` plots dE-E PID curves by
 > root [0] .x plot_dee.C(0.05,1.5,10,30)
 
+(DE thickness = 50 um, E thickness = 1.5 mm, DE range = 10 MeV, E_total range = 30 MeV.)
 ![PID_p-a](https://www.cns.s.u-tokyo.ac.jp/gitlab/hayakawa/tsrim/-/raw/main/macros/PID_p-a.png?ref_type=heads "PID_p-a")
 
 
 # Range database
-The parameters of 16th polynomial for all the isotopes up to Uranium listed in the mass table (mass2020.dat) are already provided for several commonly-used materials.
+The parameters of 16th polynomial for all the nuclides up to Uranium listed in the mass table (mass2020.dat) are already provided for several commonly-used materials.
 
 Users can also add range data and fit parameter files by themselves. In SR\ Module/ directory, there are perl script get_sr_fit_prm.pl and a ROOT macro fit_srim_table.C
+- Prepare target material information (in SR.IN format)
+  - Start Ion Stopping and Range Tables (SR.exe)
+  - Specify target material
+  - Click “Calculate Table”
+    - Then ./SR.IN file will be created
+    - Extract only the “target” part from SR.IN
+    - Store it in SR\ Module/range/(material name)/(material name).IN
+  - Then you can close SR.exe 
+- Set up get_sr_fit_prm.pl parameters
+  - A and Element ranges (abeg--aend, elbeg--elend)
+  - Material list (.IN files should be prepared in advance)
+  - Degree of the polynomial function to be fitted to the range table (16 by default)
+  - etc.
+- Excecute the script
+  - $ perl get_sr_fit_prm.pl
+  - It may take even hours for 3132 nuclides
+- One can select to run or not to run the SR.exe part, and fitting part in get_sr_fit_prm.pl, respectively.
 
 Original SRIM range files (named like 4He_in_havar.txt, etc.) are also available here [range_link](https://www.dropbox.com/scl/fo/3nqo5lhjq3vgqpbyoymmv/AB7X6ewIv6IBYjoZaQ5-7SU?rlkey=bzidq0fdmj2k8zfeh3j3rdsqu&st=6leer867&dl=0)
 which are created by the get_sr_fit_prm.pl macro.
-They are out of git management since they are as many files as number of isotopes in the mass table (mass2020.dat) for each material,
-and not directly used by TSrim (the fit parameter files range_fit_pol16_*.txt). The range list may be added sometimes.
+They are out of git management since they are as many files as number of nuclides in the mass table (mass2020.dat) up to Uranium (= 3132!) for each material,
+and not directly used by TSrim. The range list may be added sometimes.
 
 # See also
 [SRIM on ROOT](https://docs.google.com/presentation/d/1v2fcSzfREJnktkHS7z6tXroHQbBpR1BSlsRj4ryszQc/edit?usp=sharing) for details.
