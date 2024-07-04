@@ -51,7 +51,7 @@ Then
 will conpile the source and create libSrim.so and libMass.so library files, and
 > $ (sudo) make install
 
-will copy the related files to the specified directories so that ROOT can load the libraries and macros.
+will copy the related files to the specified directories so that ROOT can load the libraries, headers and macros.
 
 If Makefile fails, please edit it for your environments.
 
