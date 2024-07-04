@@ -56,7 +56,7 @@ will copy the related files to the specified directories so that ROOT can load t
 If Makefile fails, please edit it for your environments.
 
 # Usage
-## Most basic example
+### Most basic example
 On the ROOT interpreter, 
 > root [0] .L (DIRLIB/)libSrim.so   
 (Load the library) 
@@ -70,7 +70,7 @@ On the ROOT interpreter,
 > (double) 1.0492494   
 (Returned value in mm)
 
-## Useful usage
+### Useful usage
 A macro `load_srim.C` defines some useful functions to treat multiple range fit files. For example,
 > root [0] .L load_srim.C
 
@@ -97,18 +97,20 @@ loads material list of {
 
 i.g., "energy loss of 26Si in He gas of 100 mm, 300 Torr at 293 K is 16.272412 MeV".
 
-## Macro example
+Please also check `srim_all.C`, `srim_light.C`, `srim_mid.C`, `srim_cribpid.C`, etc. 
+
+### Macro example
 TSrim can easily be used in ROOT macros.
-Please include `#include <Mass.h>` and `#include <TSrim.h>` and load `gSystem->Load("libSrim.so");`, then TSrim can be used.
+Inncluding `#include <Mass.h>` and `#include <TSrim.h>` and load `gSystem->Load("libSrim.so");`, then TSrim can be used.
 An example macro `plot_dee.C` plots dE-E PID curves by
 > root [0] .x plot_dee.C(0.05,1.5,10,30)
 
-(DE thickness = 50 um, E thickness = 1.5 mm, DE range = 10 MeV, E_total range = 30 MeV.)
+i.e. ΔE thickness = 50 um, E thickness = 1.5 mm, ΔE range = 10 MeV, E_total range = 30 MeV.
 ![PID_p-a](https://www.cns.s.u-tokyo.ac.jp/gitlab/hayakawa/tsrim/-/raw/main/macros/PID_p-a.png?ref_type=heads "PID_p-a")
 
 
 # Range database
-The parameters of 16th polynomial for all the nuclides up to Uranium listed in the mass table (mass2020.dat) are already provided for several commonly-used materials.
+The parameters of 16th polynomial for all the nuclides up to Uranium listed in the mass table (mass2020.dat) are already provided for several commonly-used materials (as shown in Overview).
 
 Users can also add range data and fit parameter files by themselves. In SR\ Module/ directory, there are perl script get_sr_fit_prm.pl and a ROOT macro fit_srim_table.C
 - Prepare target material information (in SR.IN format)
@@ -129,10 +131,10 @@ Users can also add range data and fit parameter files by themselves. In SR\ Modu
   - It may take even hours for 3132 nuclides
 - One can select to run or not to run the SR.exe part, and fitting part in get_sr_fit_prm.pl, respectively.
 
-Original SRIM range files (named like 4He_in_havar.txt, etc.) are also available here [range_link](https://www.dropbox.com/scl/fo/3nqo5lhjq3vgqpbyoymmv/AB7X6ewIv6IBYjoZaQ5-7SU?rlkey=bzidq0fdmj2k8zfeh3j3rdsqu&st=6leer867&dl=0)
-which are created by the get_sr_fit_prm.pl macro.
-They are out of git management since they are as many files as number of nuclides in the mass table (mass2020.dat) up to Uranium (= 3132!) for each material,
-and not directly used by TSrim. The range list may be added sometimes.
+Original SRIM range table files (named like 4He_in_havar.txt, etc.) are also available here [range_link](https://www.dropbox.com/scl/fo/3nqo5lhjq3vgqpbyoymmv/AB7X6ewIv6IBYjoZaQ5-7SU?rlkey=bzidq0fdmj2k8zfeh3j3rdsqu&st=6leer867&dl=0)
+which are created by the get_sr_fit_prm.pl script.
+They are set out of git management since there are as many files as number of nuclides in the mass table (mass2020.dat) up to 243U (= 3132!) for each material,
+and not directly used by TSrim. 
 
 # See also
 [SRIM on ROOT](https://docs.google.com/presentation/d/1v2fcSzfREJnktkHS7z6tXroHQbBpR1BSlsRj4ryszQc/edit?usp=sharing) for details.
