@@ -1,0 +1,10 @@
+Density of Polyethelene:
+ - Low Dens.: 0.91-0.92 g/cm^3
+ - High Dens.: 0.94-0.965 g/cm^3
+ - SRIM: 0.93 g/cm^3
+
+Density of Deuterated Polyethelene
+   0.93*(M_natC + 2*M_2H)/(M_natC + 2*M_1H)
+ = 1.06 g/cm^3
+ for the same Atoms/cm^3
+
