@@ -1,7 +1,0 @@
----Target Data: (Solid=0,Gas=1), Density(g/cm3), Compound Corr.
-0    1.243    1.012749
----Number of Target Elements
- 2 
----Target Elements: (Z), Target name, Stoich, Target Mass(u)
-1   "Hydrogen"               10            1.008
-6   "Carbon"                 14            12.011

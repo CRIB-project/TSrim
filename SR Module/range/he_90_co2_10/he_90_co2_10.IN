@@ -1,8 +1,0 @@
----Target Data: (Solid=0,Gas=1), Density(g/cm3), Compound Corr.
-1    .0002976    1
----Number of Target Elements
- 3 
----Target Elements: (Z), Target name, Stoich, Target Mass(u)
-2   "Helium"                 .75           4.003
-6   "Carbon"                 .08333        12.011
-8   "Oxygen"                 .16666        15.999

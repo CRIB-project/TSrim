@@ -1,6 +1,0 @@
----Target Data: (Solid=0,Gas=1), Density(g/cm3), Compound Corr.
-0    19.311    1
----Number of Target Elements
- 1 
----Target Elements: (Z), Target name, Stoich, Target Mass(u)
-79   "Gold"                  1             196.97
