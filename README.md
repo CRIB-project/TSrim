@@ -1,15 +1,15 @@
 # Overview
 TSrim is a ROOT class inherited from TF1, which enables us to calculate range or energy loss of an ion in a material based on the SRIM range table.
 
-Instead of directly reading a SRIM's range output file and performing interpolation everytime it is called, TSrim treats a polynomial function which fits to the log(Energy) vs log(Range) table of a specified ion-target pair provided by SRIM.
+Instead of directly reading a SRIM's range output file and performing interpolation every time it is called, TSrim treats a polynomial function which fits to the log(Energy) vs log(Range) table of a specified ion-target pair provided by SRIM.
 
-We recommend the polynomial dgree of 16 for the moment, which guarantees the deviation from the original range values by SRIM mostly less than 1%, and still fast enough to repeat calculations. Fit parameter files for a number of materials are already available (in SR\ Module/range/*/range_fit_pol16_*.txt). 
+We recommend the polynomial degree of 16 for the moment, which guarantees the deviation from the original range values by SRIM mostly less than 1%, and still fast enough to repeat calculations. Fit parameter files for a number of materials are already available (in SR\ Module/range/*/range_fit_pol16_*.txt). 
 
 ### Units and material information
 - Thickness and range in mm
 - Energy in MeV
 - Energy per nucleon in MeV/u
-- Temperatire in K
+- Temperature in K
 - Pressure in Torr
 - Available material list (as of 04-July-2024)
   - "3he", "air", "al", "anthracene", "ar", "au",
@@ -48,7 +48,7 @@ by
 Then 
 > $ make
 
-will conpile the source and create libSrim.so and libMass.so library files, and
+will compile the source and create libSrim.so and libMass.so library files, and
 > $ (sudo) make install
 
 will copy the related files to the specified directories so that ROOT can load the libraries, headers and macros.
@@ -90,7 +90,7 @@ loads material list of {
   "c", "ch2",
   "h", "havar", "he", "kapton",
   "mylar", "si"
-}, and nuclide range from 1H to 56Ni. And then you can imediatly call, e.g.
+}, and nuclide range from 1H to 56Ni. And then you can immediately call, e.g.
 > root [1] srim_basic->EnergyLoss(14,26,20,"he",100,300,293)
 
 > (double) 16.272412
@@ -126,7 +126,7 @@ Users can also add range data and fit parameter files by themselves. In SR\ Modu
   - Material list (.IN files should be prepared in advance)
   - Degree of the polynomial function to be fitted to the range table (16 by default)
   - etc.
-- Excecute the script
+- Execute the script
   - $ perl get_sr_fit_prm.pl
   - It may take even hours for 3132 nuclides
 - One can select to run or not to run the SR.exe part, and fitting part in get_sr_fit_prm.pl, respectively.
