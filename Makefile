@@ -1,5 +1,5 @@
 ###################### Edit below ######################
-DIRLIB = /usr/local/lib 
+DIRLIB = /usr/local/lib
 DIRINC = /usr/local/include
 
 DIRRANGE_ORG = ./SR\ Module/range
@@ -18,19 +18,23 @@ TAR1 = Srim
 TAR2 = Mass
 
 CXX           = g++
-CXXFLAGS      = -std=c++11 #-O2 -pipe -Wall -W -Woverloaded-virtual
+CXXFLAGS      = -std=c++11 -fPIC #-O2 -pipe -Wall -W -Woverloaded-virtual
 
 ROOTCONFIG = $(ROOTSYS)/bin/root-config
 ROOTCLING = $(ROOTSYS)/bin/rootcling
 
+all: lib$(TAR1).so
+
+T${TAR1}Dict.cc: T$(TAR1).h LinkDef.h
+	${ROOTCLING} -f $@ -c $^
+
 lib$(TAR1).so: T$(TAR1)Dict.cc T$(TAR1).cc $(TAR2).cc T$(TAR1).h $(TAR2).h
-	$(ROOTCLING) -f T$(TAR1)Dict.cc -c T$(TAR1).h LinkDef.h
-	$(CXX) `$(ROOTCONFIG) --cflags --libs` -shared \
+	$(CXX) $(CXXFLAGS) `$(ROOTCONFIG) --cflags --libs` -shared \
 	T$(TAR1)Dict.cc T$(TAR1).cc $(TAR2).cc -o lib$(TAR1).so
 #-L. -lmass
 
 lib$(TAR2).so: $(TAR2).cc $(TAR2).h
-	$(CXX) $(CXXFLAGS) -c $(TAR2).cc -fPIC
+	$(CXX) $(CXXFLAGS) -c $(TAR2).cc
 	$(CXX) $(CXXFLAGS) -shared -o lib$(TAR2).so $(TAR2).o
 
 clean:
