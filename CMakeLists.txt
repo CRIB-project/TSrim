@@ -1,3 +1,4 @@
+# General settings
 if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
   message(FATAL_ERROR "DO NOT BUILD in-tree.")
 endif()
@@ -12,20 +13,25 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
       CACHE PATH "..." FORCE)
 endif()
 
-set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-as-needed")
 enable_language(CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "-Wall -g")
 
+# Setting for MacOS
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+    message(STATUS "Configuring for MacOS")
+else()
+    message(STATUS "Configuring for non-MacOS")
+    set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-as-needed")
+endif()
+
 # -fPIC
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-# ROOT 6 installation
+# ROOT settings
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
 
-# Locate the ROOT package and defines a number of variables (e.g.
-# ROOT_INCLUDE_DIRS)
 find_package(
   ROOT REQUIRED
   COMPONENTS RIO
@@ -37,10 +43,7 @@ find_package(
              Gui
              Genetic)
 
-# Define useful ROOT functions and macros (e.g. ROOT_GENERATE_DICTIONARY)
 include(${ROOT_USE_FILE})
-
-# external link directories
 link_directories(${ROOTSYS}/lib)
 
 # ====================== MAIN =======================
@@ -52,7 +55,7 @@ set(SOURCES TSrim.cc Mass.cc)
 # header files
 set(HEADERS TSrim.h Mass.h)
 
-# library setting (TSrim)
+# library setting
 add_library(${LIBNAME} SHARED ${SOURCES})
 
 target_include_directories(
@@ -91,6 +94,19 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
 
 include(CMakePackageConfigHelpers)
 # ============================================================
+
+# configure
+configure_file(
+  "${CMAKE_CURRENT_SOURCE_DIR}/template/rootlogon.C.in"
+  "${CMAKE_SOURCE_DIR}/.rootlogon.C"
+  @ONLY
+)
+
+configure_file(
+  "${CMAKE_CURRENT_SOURCE_DIR}/template/load_srim.C.in"
+  "${CMAKE_SOURCE_DIR}/macros/load_srim.C"
+  @ONLY
+)
 
 # make uninstall
 add_custom_target("uninstall" COMMENT "Uninstall installed files")

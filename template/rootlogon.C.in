@@ -1,0 +1,13 @@
+{
+    TString dypath = gSystem->GetDynamicPath();
+    TString incpath = gSystem->GetIncludePath();
+
+    dypath.Append(":@CMAKE_INSTALL_PREFIX@/lib");
+    incpath.Append(" -I@CMAKE_INSTALL_PREFIX@/include");
+
+    gSystem->SetDynamicPath(dypath);
+    gSystem->SetIncludePath(incpath);
+
+    gSystem->Load("libSrim");
+    gROOT->ProcessLine(".L @CMAKE_SOURCE_DIR@/macros/load_srim.C");
+}

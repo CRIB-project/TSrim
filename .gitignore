@@ -1,6 +1,19 @@
+# IDE
 .vscode
+
+# build
 build
-.cmake-format
 TSrimDict.cc
 TSrimDict_rdict.pcm
 *.so
+*.o
+
+# image
+*.png
+
+# template
+.rootlogon.C
+macros/load_srim.C
+
+# others
+.cmake-format
