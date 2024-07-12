@@ -1,0 +1,6 @@
+.vscode
+build
+.cmake-format
+TSrimDict.cc
+TSrimDict_rdict.pcm
+*.so
