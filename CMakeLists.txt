@@ -89,10 +89,21 @@ install(
 configure_file(cmake/${PROJECT_NAME}Config.cmake.in ${PROJECT_NAME}Config.cmake
                @ONLY)
 
+include(CMakePackageConfigHelpers)
+configure_package_config_file(
+    "cmake/${PROJECT_NAME}Config.cmake.in"
+    "${PROJECT_NAME}Config.cmake"
+    INSTALL_DESTINATION lib/cmake/${PROJECT_NAME}
+)
+
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
         DESTINATION lib/cmake/${PROJECT_NAME})
 
-include(CMakePackageConfigHelpers)
+configure_file(templates/this${PROJECT_NAME}.sh.in this${PROJECT_NAME}.sh
+               @ONLY)
+
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/this${PROJECT_NAME}.sh 
+        DESTINATION bin)
 # ============================================================
 
 # configure
