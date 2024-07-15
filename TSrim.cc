@@ -1,4 +1,5 @@
 #include "TSrim.h"
+#include "Mass.h"
 #include <TF1.h>
 #include <TString.h>
 #include <string.h>
@@ -6,7 +7,6 @@
 #include <fstream>
 #include <stdlib.h>
 
-#include <Mass.h>
 #include <algorithm>
 #include <iostream>
 #include <memory>

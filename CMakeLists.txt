@@ -19,10 +19,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "-Wall -g")
 
 # Setting for MacOS
-if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
-    message(STATUS "Configuring for MacOS")
+if(${CMAKE_CXX_COMPILER} MATCHES "Xcode")
+    message(STATUS "Configuring for clang")
 else()
-    message(STATUS "Configuring for non-MacOS")
+    message(STATUS "Configuring for gcc")
     set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-as-needed")
 endif()
 
