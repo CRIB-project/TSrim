@@ -14,6 +14,7 @@ TSrimDict_rdict.pcm
 # template
 .rootlogon.C
 macros/load_srim.C
+macros/plot_dee.C
 
 # others
 .cmake-format

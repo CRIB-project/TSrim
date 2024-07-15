@@ -40,6 +40,9 @@ TSrim::TSrim(const char *name, const Int_t npol, const char *datafile) {
     vector<TString> vmat;
     vector<Double_t> vpar[npol + 1];
     ifstream fpar(datafile);
+    if (!fpar) {
+        cout << "no data file: " << datafile << endl;
+    }
     while (!fpar.eof()) {
         fpar >> Z >> A >> mat;
         for (Int_t j = 0; j < npol + 1; j++)
@@ -58,7 +61,7 @@ TSrim::TSrim(const char *name, const Int_t npol, const char *datafile) {
         cout << "No isotope data loaded." << endl;
     }
 
-    for (Int_t i = 0; i < vZ.size(); i++) {
+    for (decltype(vZ.size()) i = 0; i < vZ.size(); i++) {
         this->push_back(TF1(Form("%d-%d_%s", vZ.at(i), vA.at(i), vmat.at(i).Data()),
                             fn_name.Data(), TSrim::log10Emin, TSrim::log10Emaxpu * Mass(Z, A)));
         for (Int_t j = 0; j < npol + 1; j++) {
@@ -78,6 +81,9 @@ TSrim::TSrim(const char *name, const Int_t npol, const char *datafile,
     vector<TString> vmat;
     vector<Double_t> vpar[npol + 1];
     ifstream fpar(datafile);
+    if (!fpar) {
+        cout << "no data file: " << datafile << endl;
+    }
     while (!fpar.eof()) {
         fpar >> Zdat >> Adat >> mat;
         for (Int_t j = 0; j < npol + 1; j++)
@@ -100,7 +106,7 @@ TSrim::TSrim(const char *name, const Int_t npol, const char *datafile,
         cout << "No isotope data loaded." << endl;
     }
 
-    for (Int_t i = 0; i < vZ.size(); i++) {
+    for (decltype(vZ.size()) i = 0; i < vZ.size(); i++) {
         this->push_back(TF1(Form("%d-%d_%s", vZ.at(i), vA.at(i), vmat.at(i).Data()),
                             fn_name.Data(), TSrim::log10Emin, TSrim::log10Emaxpu * Mass(Z, A)));
         for (Int_t j = 0; j < npol + 1; j++) {
@@ -119,6 +125,9 @@ TSrim::TSrim(const char *name, const Int_t npol, const char *datafile,
     vector<TString> vmat;
     vector<Double_t> vpar[npol + 1];
     ifstream fpar(datafile);
+    if (!fpar) {
+        cout << "no data file: " << datafile << endl;
+    }
     while (!fpar.eof()) {
         fpar >> Z >> A >> mat;
         for (Int_t j = 0; j < npol + 1; j++)
@@ -139,7 +148,7 @@ TSrim::TSrim(const char *name, const Int_t npol, const char *datafile,
         cout << "No isotope data loaded." << endl;
     }
 
-    for (Int_t i = 0; i < vZ.size(); i++) {
+    for (decltype(vZ.size()) i = 0; i < vZ.size(); i++) {
         this->push_back(TF1(Form("%d-%d_%s", vZ.at(i), vA.at(i), vmat.at(i).Data()),
                             fn_name.Data(), TSrim::log10Emin, TSrim::log10Emaxpu * Mass(Z, A)));
         for (Int_t j = 0; j < npol + 1; j++) {
@@ -147,12 +156,13 @@ TSrim::TSrim(const char *name, const Int_t npol, const char *datafile,
         }
     }
 };
+TSrim::~TSrim() {}
 ///////////////////////////////////////////////////////////////////////////////
 Double_t TSrim::Range(Int_t Z, Int_t A, Double_t E, TString mat) {
     if (E <= 0.) {
         return 0.;
     } else {
-        for (Int_t i = 0; i < this->size(); i++) {
+        for (decltype(this->size()) i = 0; i < this->size(); i++) {
             if (!strcmp(this->at(i).GetName(), Form("%d-%d_%s", Z, A, mat.Data())))
                 return pow(10, this->at(i).Eval(log10(E)));
         }
@@ -217,7 +227,7 @@ Double_t TSrim::EnergyNew(Int_t Z, Int_t A, Double_t Eold, TString mat, Double_t
     } else if (thk == 0.) {
         return Eold;
     } else {
-        for (Int_t i = 0; i < this->size(); i++) {
+        for (decltype(this->size()) i = 0; i < this->size(); i++) {
             if (!strcmp(this->at(i).GetName(), Form("%d-%d_%s", Z, A, mat.Data()))) {
                 Double_t Rold = this->TSrim::Range(Z, A, Eold, mat, P, T);
                 Double_t Rnew = Rold - thk;
@@ -288,7 +298,7 @@ void TSrim::ShowMatList() {
     TString matlist[100];
     TString mat;
     Int_t k = 0;
-    for (Int_t i = 0; i < this->size() - 20; i++) {
+    for (decltype(this->size()) i = 0; i < this->size() - 20; i++) {
         Bool_t exitFlag = false;
         mat = this->at(i).GetName();
         mat = mat(mat.First("_") + 1, mat.Length() - mat.First("_"));
@@ -325,7 +335,7 @@ void TSrim::ShowMatListZAN() {
     Int_t Z, A, N;
     Int_t Zmin, Amin, Nmin;
     Int_t Zmax, Amax, Nmax;
-    for (Int_t i = 0; i < this->size(); i++) {
+    for (decltype(this->size()) i = 0; i < this->size(); i++) {
         Bool_t exitFlag = false;
         mat = this->at(i).GetName();
         Z = stoi(mat(0, mat.First("-")));

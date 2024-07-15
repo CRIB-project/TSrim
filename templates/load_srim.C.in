@@ -1,3 +1,5 @@
+#pragma once
+
 #include <Mass.h>
 #include <TSrim.h>
 
@@ -55,15 +57,15 @@ TSrim *load_srim() {
 }
 
 TSrim *load_srim(vector<TString> mat) {
-    gSystem->Load("libSrim.so");
+    // gSystem->Load("libSrim.so");
     const Int_t nmat = mat.size();
 
     TSrim *srim0 = new TSrim();
     TSrim *srim[nmat];
     for (Int_t i = 0; i < nmat; i++) {
         srim[i] = new TSrim(mat.at(i).Data(), npol,
-                            Form("%s/%s/%s%s.%s", dir.Data(), mat_all.at(i).Data(),
-                                 filename.Data(), mat_all.at(i).Data(), fileext.Data()));
+                            Form("%s/%s/%s%s.%s", dir.Data(), mat.at(i).Data(),
+                                 filename.Data(), mat.at(i).Data(), fileext.Data()));
         cout << Form("%s list loaded.", mat[i].Data()) << endl;
         srim0->TSrim::insert(srim0->end(), srim[i]->begin(), srim[i]->end());
     }
@@ -71,15 +73,15 @@ TSrim *load_srim(vector<TString> mat) {
 }
 
 TSrim *load_srim(vector<TString> mat, Int_t Z, Int_t A) {
-    gSystem->Load("libSrim.so");
+    // gSystem->Load("libSrim.so");
     const Int_t nmat = mat.size();
 
     TSrim *srim0 = new TSrim();
     TSrim *srim[nmat];
     for (Int_t i = 0; i < nmat; i++) {
         srim[i] = new TSrim(mat.at(i).Data(), npol,
-                            Form("%s/%s/%s%s.%s", dir.Data(), mat_all.at(i).Data(),
-                                 filename.Data(), mat_all.at(i).Data(), fileext.Data()),
+                            Form("%s/%s/%s%s.%s", dir.Data(), mat.at(i).Data(),
+                                 filename.Data(), mat.at(i).Data(), fileext.Data()),
                             Z, A);
         cout << Form("%s list loaded for %d%s.",
                      mat[i].Data(), A, GetEl(Z))
@@ -91,15 +93,15 @@ TSrim *load_srim(vector<TString> mat, Int_t Z, Int_t A) {
 
 TSrim *load_srim(vector<TString> mat,
                  Int_t Zmin, Int_t Amin, Int_t Zmax, Int_t Amax) {
-    gSystem->Load("libSrim.so");
+    // gSystem->Load("libSrim.so");
     const Int_t nmat = mat.size();
 
     TSrim *srim0 = new TSrim();
     TSrim *srim[nmat];
     for (Int_t i = 0; i < nmat; i++) {
         srim[i] = new TSrim(mat.at(i).Data(), npol,
-                            Form("%s/%s/%s%s.%s", dir.Data(), mat_all.at(i).Data(),
-                                 filename.Data(), mat_all.at(i).Data(), fileext.Data()),
+                            Form("%s/%s/%s%s.%s", dir.Data(), mat.at(i).Data(),
+                                 filename.Data(), mat.at(i).Data(), fileext.Data()),
                             Zmin, Amin, Zmax, Amax);
         cout << Form("%s list loaded for %d%s - %d%s.",
                      mat[i].Data(), Amin, GetEl(Zmin), Amax, GetEl(Zmax))

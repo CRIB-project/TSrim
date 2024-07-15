@@ -1,7 +1,7 @@
 #include "Mass.h"
 
 double Mass(int Z, int A) {
-    for (int i = 0; i < masstab.size(); i++) {
+    for (decltype(masstab.size()) i = 0; i < masstab.size(); i++) {
         if (masstab.at(i).vZ == Z && masstab.at(i).vA == A)
             return masstab.at(i).vM;
     }
@@ -10,7 +10,7 @@ double Mass(int Z, int A) {
 }
 
 double Mass(int A, const char *El) {
-    for (int i = 0; i < masstab.size(); i++) {
+    for (decltype(masstab.size()) i = 0; i < masstab.size(); i++) {
         if (masstab.at(i).vA == A && strcmp(masstab.at(i).vEl, El) == 0)
             return masstab.at(i).vM;
     }
@@ -35,7 +35,7 @@ double EBindPu(int A, const char *El) {
 }
 
 const char *GetEl(int Z) {
-    for (int i = 0; i < masstab.size(); i++) {
+    for (decltype(masstab.size()) i = 0; i < masstab.size(); i++) {
         if (masstab.at(i).vZ == Z)
             return masstab.at(i).vEl;
     }
@@ -44,7 +44,7 @@ const char *GetEl(int Z) {
 }
 
 int GetZ(const char *El) {
-    for (int i = 0; i < masstab.size(); i++) {
+    for (decltype(masstab.size()) i = 0; i < masstab.size(); i++) {
         if (strcmp(masstab.at(i).vEl, El) == 0)
             return masstab.at(i).vZ;
     }
