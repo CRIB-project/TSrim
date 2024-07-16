@@ -1,17 +1,13 @@
 #include "TSrim.h"
 #include "Mass.h"
-#include <TF1.h>
-#include <TString.h>
-#include <string.h>
 
 #include <fstream>
-#include <stdlib.h>
-
-#include <algorithm>
 #include <iostream>
-#include <memory>
-#include <vector>
-using namespace std;
+
+#include <TF1.h>
+#include <TString.h>
+
+using namespace tsrim;
 
 /*
   Thickness in mm
@@ -39,9 +35,9 @@ TSrim::TSrim(const char *name, const Int_t npol, const char *datafile) {
     vector<Int_t> vZ, vA;
     vector<TString> vmat;
     vector<Double_t> vpar[npol + 1];
-    ifstream fpar(datafile);
+    std::ifstream fpar(datafile);
     if (!fpar) {
-        cout << "no data file: " << datafile << endl;
+        std::cout << "no data file: " << datafile << std::endl;
     }
     while (!fpar.eof()) {
         fpar >> Z >> A >> mat;
@@ -58,7 +54,7 @@ TSrim::TSrim(const char *name, const Int_t npol, const char *datafile) {
     }
     fpar.close();
     if (vZ.size() == 0) {
-        cout << "No isotope data loaded." << endl;
+        std::cout << "No isotope data loaded." << std::endl;
     }
 
     for (decltype(vZ.size()) i = 0; i < vZ.size(); i++) {
@@ -80,9 +76,9 @@ TSrim::TSrim(const char *name, const Int_t npol, const char *datafile,
     vector<Int_t> vZ, vA;
     vector<TString> vmat;
     vector<Double_t> vpar[npol + 1];
-    ifstream fpar(datafile);
+    std::ifstream fpar(datafile);
     if (!fpar) {
-        cout << "no data file: " << datafile << endl;
+        std::cout << "no data file: " << datafile << std::endl;
     }
     while (!fpar.eof()) {
         fpar >> Zdat >> Adat >> mat;
@@ -103,7 +99,7 @@ TSrim::TSrim(const char *name, const Int_t npol, const char *datafile,
     }
     fpar.close();
     if (vZ.size() == 0) {
-        cout << "No isotope data loaded." << endl;
+        std::cout << "No isotope data loaded." << std::endl;
     }
 
     for (decltype(vZ.size()) i = 0; i < vZ.size(); i++) {
@@ -124,9 +120,9 @@ TSrim::TSrim(const char *name, const Int_t npol, const char *datafile,
     vector<Int_t> vZ, vA;
     vector<TString> vmat;
     vector<Double_t> vpar[npol + 1];
-    ifstream fpar(datafile);
+    std::ifstream fpar(datafile);
     if (!fpar) {
-        cout << "no data file: " << datafile << endl;
+        std::cout << "no data file: " << datafile << std::endl;
     }
     while (!fpar.eof()) {
         fpar >> Z >> A >> mat;
@@ -145,7 +141,7 @@ TSrim::TSrim(const char *name, const Int_t npol, const char *datafile,
     }
     fpar.close();
     if (vZ.size() == 0) {
-        cout << "No isotope data loaded." << endl;
+        std::cout << "No isotope data loaded." << std::endl;
     }
 
     for (decltype(vZ.size()) i = 0; i < vZ.size(); i++) {
@@ -166,7 +162,7 @@ Double_t TSrim::Range(Int_t Z, Int_t A, Double_t E, TString mat) {
             if (!strcmp(this->at(i).GetName(), Form("%d-%d_%s", Z, A, mat.Data())))
                 return pow(10, this->at(i).Eval(log10(E)));
         }
-        cout << "No data in the range list" << endl;
+        std::cout << "No data in the range list" << std::endl;
         // exit(0);
         return TSrim::dummy;
     }
@@ -187,10 +183,10 @@ Double_t TSrim::RangePu(Int_t Z, Int_t A, Double_t Epu, TString mat,
 Double_t TSrim::EnergyNew(Int_t Z, Int_t A, Double_t Eold, TString mat, Double_t thk) {
     return this->TSrim::EnergyNew(Z, A, Eold, mat, thk, TSrim::P1, TSrim::T0);
     // if( Eold < TSrim::Emin){
-    //   cout << "Energy is too small" << endl;
+    //   std::cout << "Energy is too small" << std::endl;
     //   return 0.;
     // }else if( Eold > TSrim::Emaxpu*Mass(Z,A)){
-    //   cout << "Energy is too high" << endl;
+    //   std::cout << "Energy is too high" << std::endl;
     //   return Eold;
     // }else if( Eold <= 0. && thk >= 0.){
     //   return 0.;
@@ -208,7 +204,7 @@ Double_t TSrim::EnergyNew(Int_t Z, Int_t A, Double_t Eold, TString mat, Double_t
     // 	  return pow(10,this->at(i).GetX(log10(Rnew),TSrim::log10Emin,TSrim::log10Emaxpu*Mass(Z,A)));
     //     }
     //   }
-    //   cout << "No data in the range list" << endl;
+    //   std::cout << "No data in the range list" << std::endl;
     //   //exit(0);
     //   return TSrim::dummy;
     // }
@@ -217,10 +213,10 @@ Double_t TSrim::EnergyNew(Int_t Z, Int_t A, Double_t Eold, TString mat, Double_t
                           Double_t P, Double_t T) {
     Double_t fd = TSrim::T0 / T * P / TSrim::P1;
     if (Eold < TSrim::Emin) {
-        cout << "Energy is too small" << endl;
+        std::cout << "Energy is too small" << std::endl;
         return 0.;
     } else if (Eold > TSrim::Emaxpu * Mass(Z, A)) {
-        cout << "Energy is too high" << endl;
+        std::cout << "Energy is too high" << std::endl;
         return Eold;
     } else if (Eold <= 0. && thk >= 0.) {
         return 0.;
@@ -238,7 +234,7 @@ Double_t TSrim::EnergyNew(Int_t Z, Int_t A, Double_t Eold, TString mat, Double_t
                     return pow(10, this->at(i).GetX(log10(Rnew * fd), TSrim::log10Emin, TSrim::log10Emaxpu * Mass(Z, A)));
             }
         }
-        cout << "No data in the range list" << endl;
+        std::cout << "No data in the range list" << std::endl;
         // exit(0);
         return TSrim::dummy;
     }
@@ -321,10 +317,10 @@ void TSrim::ShowMatList() {
     Int_t kmax = k;
     for (k = 0; k < kmax; k++) {
         if (k > 100) {
-            cout << "Too many materials" << endl;
+            std::cout << "Too many materials" << std::endl;
             break;
         }
-        cout << matlist[k].Data() << endl;
+        std::cout << matlist[k].Data() << std::endl;
     }
 }
 
@@ -338,8 +334,8 @@ void TSrim::ShowMatListZAN() {
     for (decltype(this->size()) i = 0; i < this->size(); i++) {
         Bool_t exitFlag = false;
         mat = this->at(i).GetName();
-        Z = stoi(mat(0, mat.First("-")));
-        A = stoi(mat(mat.First("-") + 1, mat.First("_") - mat.First("-") - 1));
+        Z = std::stoi(mat(0, mat.First("-")));
+        A = std::stoi(mat(mat.First("-") + 1, mat.First("_") - mat.First("-") - 1));
         N = A - Z;
         mat = mat(mat.First("_") + 1, mat.Length() - mat.First("_"));
         if (i == 0) {
@@ -376,12 +372,12 @@ void TSrim::ShowMatListZAN() {
     Int_t kmax = k;
     for (k = 0; k < kmax; k++) {
         if (k > 100) {
-            cout << "Too many materials" << endl;
+            std::cout << "Too many materials" << std::endl;
             break;
         }
-        cout << Form("%s, Z: %d(%s)-%d(%s), N: %d-%d, A: %d-%d",
-                     matlist[k].Data(), Zmin, GetEl(Zmin), Zmax, GetEl(Zmax),
-                     Nmin, Nmax, Amin, Amax)
-             << endl;
+        std::cout << Form("%s, Z: %d(%s)-%d(%s), N: %d-%d, A: %d-%d",
+                          matlist[k].Data(), Zmin, GetEl(Zmin), Zmax, GetEl(Zmax),
+                          Nmin, Nmax, Amin, Amax)
+                  << std::endl;
     }
 }
