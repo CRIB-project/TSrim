@@ -3,6 +3,8 @@
 #include <Mass.h>
 #include <TSrim.h>
 
+using namespace tsrim;
+
 // The header (Mass.h, TSrim.h) directory path should be defined in ~/.rootlogon.C
 // The library path (libSrim.so) should be defined in ~/.rootrc
 
