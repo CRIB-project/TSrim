@@ -70,10 +70,33 @@ public:
   Double_t ELossPu(Int_t Z, Int_t A, Double_t Eoldpu, TString mat, Double_t thk,
                    Double_t P, Double_t T); // for gas
   //////////////////////////////////////////////////////////////////////////
+  // Thickness for energies before and after a material 
+  Double_t EnergiesToThick(Int_t Z, Int_t A, Double_t Eold, Double_t Enew,
+			   TString mat); 
+  Double_t EnergiesToThick(Int_t Z, Int_t A, Double_t Eold, Double_t Enew,
+			   TString mat, Double_t P, Double_t T); // for gas
+  Double_t EnergiesToThickPu(Int_t Z, Int_t A, Double_t Eoldpu, Double_t Enewpu,
+			     TString mat); 
+  Double_t EnergiesToThickPu(Int_t Z, Int_t A, Double_t Eoldpu, Double_t Enewpu,
+			     TString mat, Double_t P, Double_t T); // for gas
+  Double_t EToThk(Int_t Z, Int_t A, Double_t Eold, Double_t Enew, TString mat);
+  Double_t EToThk(Int_t Z, Int_t A, Double_t Eold, Double_t Enew,
+		  TString mat, Double_t P, Double_t T); // for gas  
+  Double_t EToThkPu(Int_t Z, Int_t A, Double_t Eoldpu, Double_t Enewpu, TString mat);
+  Double_t EToThkPu(Int_t Z, Int_t A, Double_t Eoldpu, Double_t Enewpu,
+		    TString mat, Double_t P, Double_t T); // for gas  
+  // Thickness for an incident energy and energy loss in a material 
+  Double_t ELossToThk(Int_t Z, Int_t A, Double_t Eold, Double_t dE, TString mat);
+  Double_t ELossToThk(Int_t Z, Int_t A, Double_t Eold, Double_t dE,
+		  TString mat, Double_t P, Double_t T); // for gas  
+  Double_t ELossToThkPu(Int_t Z, Int_t A, Double_t Eoldpu, Double_t dEpu, TString mat);
+  Double_t ELossToThkPu(Int_t Z, Int_t A, Double_t Eoldpu, Double_t dEpu,
+		  TString mat, Double_t P, Double_t T); // for gas  
+  //////////////////////////////////////////////////////////////////////////
   // To show material list
   void ShowMatList();
   // To show material list and the nuclide range
-  void ShowMatListZAN();
+  void ShowMatNuclList();
   //////////////////////////////////////////////////////////////////////////
 
 private:
