@@ -6,7 +6,7 @@
 #include <fstream>
 #include <stdlib.h>
 
-#include <Mass.h>
+#include "Mass.h"
 #include <algorithm>
 #include <iostream>
 #include <memory>
@@ -68,8 +68,8 @@ TSrim::TSrim(const char *name, const Int_t npol, const char *datafile) {
   }
   // TSrim(name, npol, datafile, 1, 1, 20, 40);
 };
-TSrim::TSrim(const char *name, const Int_t npol, const char *datafile, Int_t Z,
-             Int_t A) {
+TSrim::TSrim(const char *name, const Int_t npol, const char *datafile,
+	     Int_t Z, Int_t A) {
   TString fn_name = Form("pol%d", npol);
   Double_t dummy;
   Int_t Zdat, Adat;
@@ -164,18 +164,45 @@ Double_t TSrim::Range(Int_t Z, Int_t A, Double_t E, TString mat) {
     return TSrim::dummy;
   }
 }
-Double_t TSrim::Range(Int_t Z, Int_t A, Double_t E, TString mat, Double_t P,
-                      Double_t T) { // For gas density correction
+Double_t TSrim::Range(Int_t Z, Int_t A, Double_t E, TString mat,
+		      Double_t P, Double_t T) { // For gas density correction
   Double_t fd = TSrim::T0 / T * P / TSrim::P1;
   return this->TSrim::Range(Z, A, E, mat) / fd;
 }
 Double_t TSrim::RangePu(Int_t Z, Int_t A, Double_t Epu, TString mat) {
   return this->TSrim::Range(Z, A, Epu * Mass(Z, A), mat);
 }
-Double_t TSrim::RangePu(Int_t Z, Int_t A, Double_t Epu, TString mat, Double_t P,
-                        Double_t T) {
+Double_t TSrim::RangePu(Int_t Z, Int_t A, Double_t Epu, TString mat,
+			Double_t P, Double_t T) {
   return this->TSrim::Range(Z, A, Epu * Mass(Z, A), mat, P, T);
 }
+///////////////////////////////////////////////////////////////////////////////
+Double_t TSrim::RangeToE(Int_t Z, Int_t A, TString mat, Double_t thk) {
+  return this->TSrim::RangeToE(Z, A, mat, thk, TSrim::P1, TSrim::T0);  
+}
+Double_t TSrim::RangeToE(Int_t Z, Int_t A, TString mat, Double_t thk,
+			 Double_t P, Double_t T) { // for gas
+  Double_t fd = TSrim::T0 / T * P / TSrim::P1;
+  if (thk * fd <= TSrim::Rmin) {
+    return 0.;
+  } else {
+    for (Int_t i = 0; i < this->size(); i++) {
+      if (!strcmp(this->at(i).GetName(), Form("%d-%d_%s", Z, A, mat.Data())))
+	return pow(10, this->at(i).GetX(log10(thk * fd)));	
+    }
+    cout << "No data in the range list" << endl;
+    // exit(0);
+    return TSrim::dummy;
+  }
+}
+Double_t TSrim::RangeToEPu(Int_t Z, Int_t A, TString mat, Double_t thk) {
+  return this->TSrim::RangeToE(Z, A, mat, thk) / Mass(Z, A);
+}
+Double_t TSrim::RangeToEPu(Int_t Z, Int_t A, TString mat, Double_t thk,
+			   Double_t P, Double_t T) { // for gas
+  return this->TSrim::RangeToE(Z, A, mat, thk, P1, T0) / Mass(Z, A);
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 Double_t TSrim::EnergyNew(Int_t Z, Int_t A, Double_t Eold, TString mat,
                           Double_t thk) {

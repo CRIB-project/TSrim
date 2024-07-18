@@ -15,12 +15,21 @@ public:
   //////////////////////////////////////////////////////////////////////////
   // Range in a material of an ion at an energy
   Double_t Range(Int_t Z, Int_t A, Double_t E, TString mat);
-  Double_t Range(Int_t Z, Int_t A, Double_t E, TString mat, Double_t P,
-                 Double_t T); // for gas
+  Double_t Range(Int_t Z, Int_t A, Double_t E, TString mat,
+		 Double_t P, Double_t T); // for gas
   // Energy per nucleon
   Double_t RangePu(Int_t Z, Int_t A, Double_t Epu, TString mat);
-  Double_t RangePu(Int_t Z, Int_t A, Double_t Epu, TString mat, Double_t P,
-                   Double_t T); // for gas
+  Double_t RangePu(Int_t Z, Int_t A, Double_t Epu, TString mat,
+		   Double_t P, Double_t T); // for gas
+  //////////////////////////////////////////////////////////////////////////
+  // Energy for a specified range in a material of an ion
+  Double_t RangeToE(Int_t Z, Int_t A, TString mat, Double_t thk);
+  Double_t RangeToE(Int_t Z, Int_t A, TString mat, Double_t thk,
+		    Double_t P, Double_t T); // for gas
+  // Energy per nucleon
+  Double_t RangeToEPu(Int_t Z, Int_t A, TString mat, Double_t thk);
+  Double_t RangeToEPu(Int_t Z, Int_t A, TString mat, Double_t thk,
+		      Double_t P, Double_t T); // for gas
   //////////////////////////////////////////////////////////////////////////
   // Energy of an ion after a material with a specified thickness
   Double_t EnergyNew(Int_t Z, Int_t A, Double_t Eold, TString mat,
