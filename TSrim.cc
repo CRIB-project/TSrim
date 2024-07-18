@@ -68,8 +68,8 @@ TSrim::TSrim(const char *name, const Int_t npol, const char *datafile) {
   }
   // TSrim(name, npol, datafile, 1, 1, 20, 40);
 };
-TSrim::TSrim(const char *name, const Int_t npol, const char *datafile,
-	     Int_t Z, Int_t A) {
+TSrim::TSrim(const char *name, const Int_t npol, const char *datafile, Int_t Z,
+             Int_t A) {
   TString fn_name = Form("pol%d", npol);
   Double_t dummy;
   Int_t Zdat, Adat;
@@ -164,12 +164,12 @@ Double_t TSrim::Range(Int_t Z, Int_t A, Double_t E, TString mat) {
     return TSrim::dummy;
   }
 }
-Double_t TSrim::Range(Int_t Z, Int_t A, Double_t E, TString mat,
-		      Double_t P, Double_t T) { // For gas density correction
-  if(P == 0){
+Double_t TSrim::Range(Int_t Z, Int_t A, Double_t E, TString mat, Double_t P,
+                      Double_t T) { // For gas density correction
+  if (P == 0) {
     cout << "Gas pressure is zero" << endl;
     return TSrim::dummy;
-  }else{
+  } else {
     Double_t fd = TSrim::T0 / T * P / TSrim::P1;
     return this->TSrim::Range(Z, A, E, mat) / fd;
   }
@@ -177,23 +177,23 @@ Double_t TSrim::Range(Int_t Z, Int_t A, Double_t E, TString mat,
 Double_t TSrim::RangePu(Int_t Z, Int_t A, Double_t Epu, TString mat) {
   return this->TSrim::Range(Z, A, Epu * Mass(Z, A), mat);
 }
-Double_t TSrim::RangePu(Int_t Z, Int_t A, Double_t Epu, TString mat,
-			Double_t P, Double_t T) {
+Double_t TSrim::RangePu(Int_t Z, Int_t A, Double_t Epu, TString mat, Double_t P,
+                        Double_t T) {
   return this->TSrim::Range(Z, A, Epu * Mass(Z, A), mat, P, T);
 }
 ///////////////////////////////////////////////////////////////////////////////
 Double_t TSrim::RangeToE(Int_t Z, Int_t A, TString mat, Double_t thk) {
-  return this->TSrim::RangeToE(Z, A, mat, thk, TSrim::P1, TSrim::T0);  
+  return this->TSrim::RangeToE(Z, A, mat, thk, TSrim::P1, TSrim::T0);
 }
 Double_t TSrim::RangeToE(Int_t Z, Int_t A, TString mat, Double_t thk,
-			 Double_t P, Double_t T) { // for gas
+                         Double_t P, Double_t T) { // for gas
   Double_t fd = TSrim::T0 / T * P / TSrim::P1;
   if (thk * fd <= TSrim::Rmin) {
     return 0.;
   } else {
     for (Int_t i = 0; i < this->size(); i++) {
       if (!strcmp(this->at(i).GetName(), Form("%d-%d_%s", Z, A, mat.Data())))
-	return pow(10, this->at(i).GetX(log10(thk * fd)));	
+        return pow(10, this->at(i).GetX(log10(thk * fd)));
     }
     cout << "No data in the range list" << endl;
     // exit(0);
@@ -204,7 +204,7 @@ Double_t TSrim::RangeToEPu(Int_t Z, Int_t A, TString mat, Double_t thk) {
   return this->TSrim::RangeToE(Z, A, mat, thk) / Mass(Z, A);
 }
 Double_t TSrim::RangeToEPu(Int_t Z, Int_t A, TString mat, Double_t thk,
-			   Double_t P, Double_t T) { // for gas
+                           Double_t P, Double_t T) { // for gas
   return this->TSrim::RangeToE(Z, A, mat, thk, P1, T0) / Mass(Z, A);
 }
 
@@ -332,15 +332,16 @@ Double_t TSrim::ELossPu(Int_t Z, Int_t A, Double_t Eoldpu, TString mat,
 }
 ///////////////////////////////////////////////////////////////////////////////
 Double_t TSrim::EnergiesToThick(Int_t Z, Int_t A, Double_t Eold, Double_t Enew,
-				TString mat) {
-  return this->TSrim::EnergiesToThick(Z, A, Eold, Enew, mat, TSrim::P1, TSrim::T0);
+                                TString mat) {
+  return this->TSrim::EnergiesToThick(Z, A, Eold, Enew, mat, TSrim::P1,
+                                      TSrim::T0);
 }
 Double_t TSrim::EnergiesToThick(Int_t Z, Int_t A, Double_t Eold, Double_t Enew,
-				TString mat, Double_t P, Double_t T) {
+                                TString mat, Double_t P, Double_t T) {
   if (Eold < 0 || Enew < 0) {
     cout << "Negative energy" << endl;
     return TSrim::dummy;
-  } else if ( P == 0.) {
+  } else if (P == 0.) {
     cout << "Gas pressure = 0." << endl;
     return TSrim::dummy;
   } else {
@@ -355,8 +356,8 @@ Double_t TSrim::EnergiesToThick(Int_t Z, Int_t A, Double_t Eold, Double_t Enew,
     for (Int_t i = 0; i < this->size(); i++) {
       if (!strcmp(this->at(i).GetName(), Form("%d-%d_%s", Z, A, mat.Data()))) {
         Double_t Rold = this->TSrim::Range(Z, A, Eold, mat, P, T);
-        Double_t Rnew = this->TSrim::Range(Z, A, Enew, mat, P, T);	
-	return Rold - Rnew;
+        Double_t Rnew = this->TSrim::Range(Z, A, Enew, mat, P, T);
+        return Rold - Rnew;
       }
     }
     cout << "No data in the range list" << endl;
@@ -364,43 +365,48 @@ Double_t TSrim::EnergiesToThick(Int_t Z, Int_t A, Double_t Eold, Double_t Enew,
     return TSrim::dummy;
   }
 }
-Double_t TSrim::EnergiesToThickPu(Int_t Z, Int_t A, Double_t Eoldpu, Double_t Enewpu,
-				  TString mat) {
+Double_t TSrim::EnergiesToThickPu(Int_t Z, Int_t A, Double_t Eoldpu,
+                                  Double_t Enewpu, TString mat) {
   return this->TSrim::EnergiesToThick(Z, A, Eoldpu * Mass(Z, A),
-				      Enewpu * Mass(Z, A), mat);
+                                      Enewpu * Mass(Z, A), mat);
 }
-Double_t TSrim::EnergiesToThickPu(Int_t Z, Int_t A, Double_t Eoldpu, Double_t Enewpu,
-				  TString mat, Double_t P, Double_t T) {
+Double_t TSrim::EnergiesToThickPu(Int_t Z, Int_t A, Double_t Eoldpu,
+                                  Double_t Enewpu, TString mat, Double_t P,
+                                  Double_t T) {
   return this->TSrim::EnergiesToThick(Z, A, Eoldpu * Mass(Z, A),
-				      Enewpu * Mass(Z, A), mat, P, T);
+                                      Enewpu * Mass(Z, A), mat, P, T);
 }
 Double_t TSrim::EToThk(Int_t Z, Int_t A, Double_t Eold, Double_t Enew,
-		       TString mat) {
+                       TString mat) {
   return this->TSrim::EnergiesToThick(Z, A, Eold, Enew, mat);
 }
 Double_t TSrim::EToThk(Int_t Z, Int_t A, Double_t Eold, Double_t Enew,
-		       TString mat, Double_t P, Double_t T) {
+                       TString mat, Double_t P, Double_t T) {
   return this->TSrim::EnergiesToThick(Z, A, Eold, Enew, mat, P, T);
 }
 Double_t TSrim::EToThkPu(Int_t Z, Int_t A, Double_t Eoldpu, Double_t Enewpu,
-			 TString mat) {
+                         TString mat) {
   return this->TSrim::EnergiesToThickPu(Z, A, Eoldpu, Enewpu, mat);
 }
 Double_t TSrim::EToThkPu(Int_t Z, Int_t A, Double_t Eoldpu, Double_t Enewpu,
-			 TString mat, Double_t P, Double_t T) {
+                         TString mat, Double_t P, Double_t T) {
   return this->TSrim::EnergiesToThickPu(Z, A, Eoldpu, Enewpu, mat, P, T);
 }
-Double_t TSrim::ELossToThk(Int_t Z, Int_t A, Double_t Eold, Double_t dE, TString mat) {
-  return this->TSrim::EnergiesToThick(Z, A, Eold, Eold-dE, mat);
+Double_t TSrim::ELossToThk(Int_t Z, Int_t A, Double_t Eold, Double_t dE,
+                           TString mat) {
+  return this->TSrim::EnergiesToThick(Z, A, Eold, Eold - dE, mat);
 }
-Double_t TSrim::ELossToThk(Int_t Z, Int_t A, Double_t Eold, Double_t dE, TString mat, Double_t P, Double_t T) {
-  return this->TSrim::EnergiesToThick(Z, A, Eold, Eold-dE, mat, P, T);
+Double_t TSrim::ELossToThk(Int_t Z, Int_t A, Double_t Eold, Double_t dE,
+                           TString mat, Double_t P, Double_t T) {
+  return this->TSrim::EnergiesToThick(Z, A, Eold, Eold - dE, mat, P, T);
 }
-Double_t TSrim::ELossToThkPu(Int_t Z, Int_t A, Double_t Eoldpu, Double_t dEpu, TString mat) {
-  return this->TSrim::EnergiesToThickPu(Z, A, Eoldpu, Eoldpu-dEpu, mat);
+Double_t TSrim::ELossToThkPu(Int_t Z, Int_t A, Double_t Eoldpu, Double_t dEpu,
+                             TString mat) {
+  return this->TSrim::EnergiesToThickPu(Z, A, Eoldpu, Eoldpu - dEpu, mat);
 }
-Double_t TSrim::ELossToThkPu(Int_t Z, Int_t A, Double_t Eoldpu, Double_t dEpu, TString mat, Double_t P, Double_t T) {
-  return this->TSrim::EnergiesToThickPu(Z, A, Eoldpu, Eoldpu-dEpu, mat, P, T);
+Double_t TSrim::ELossToThkPu(Int_t Z, Int_t A, Double_t Eoldpu, Double_t dEpu,
+                             TString mat, Double_t P, Double_t T) {
+  return this->TSrim::EnergiesToThickPu(Z, A, Eoldpu, Eoldpu - dEpu, mat, P, T);
 }
 ///////////////////////////////////////////////////////////////////////////////
 void TSrim::ShowMatList() {
