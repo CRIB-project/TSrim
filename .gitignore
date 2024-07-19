@@ -1,6 +1,18 @@
+# IDE
 .vscode
+
+# build
 build
-.cmake-format
+install
 TSrimDict.cc
 TSrimDict_rdict.pcm
 *.so
+*.o
+
+# image
+*.png
+
+# template
+
+# others
+.cmake-format
