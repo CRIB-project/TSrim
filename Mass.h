@@ -1,13 +1,9 @@
 #ifndef __MASS
 #define __MASS
 
-#include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <vector>
-using namespace std;
 
+namespace amdc {
 const double amu = 931.478;
 
 struct Z_A_El_M {
@@ -18,7 +14,7 @@ struct Z_A_El_M {
 };
 
 // Mass data from https://www-nds.iaea.org/amdc/ame2020/mass_1.mas20.txt
-const vector<Z_A_El_M> masstab = {
+const std::vector<amdc::Z_A_El_M> masstab = {
     {0, 1, "n", 1.00866491590},
     {1, 1, "H", 1.0078250319},
     {1, 2, "H", 2.0141017778},
@@ -3589,5 +3585,7 @@ double EBindPu(int A, const char *El);
 
 const char *GetEl(int Z);
 int GetZ(const char *El);
+
+} // namespace amdc
 
 #endif
