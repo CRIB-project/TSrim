@@ -32,6 +32,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # ROOT settings
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
 
+# there are no need components?
 find_package(
   ROOT REQUIRED
   COMPONENTS RIO
@@ -102,28 +103,28 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
 configure_file(templates/this${PROJECT_NAME}.sh.in this${PROJECT_NAME}.sh
                @ONLY)
 
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/this${PROJECT_NAME}.sh 
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/this${PROJECT_NAME}.sh
         DESTINATION bin)
 # ============================================================
 
 # configure
-configure_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/templates/rootlogon.C.in"
-  "${CMAKE_SOURCE_DIR}/.rootlogon.C"
-  @ONLY
-)
-
-configure_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/templates/load_srim.C.in"
-  "${CMAKE_SOURCE_DIR}/macros/load_srim.C"
-  @ONLY
-)
-
-configure_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/templates/plot_dee.C.in"
-  "${CMAKE_SOURCE_DIR}/macros/plot_dee.C"
-  @ONLY
-)
+#configure_file(
+#  "${CMAKE_CURRENT_SOURCE_DIR}/templates/rootlogon.C.in"
+#  "${CMAKE_SOURCE_DIR}/.rootlogon.C"
+#  @ONLY
+#)
+#
+#configure_file(
+#  "${CMAKE_CURRENT_SOURCE_DIR}/templates/load_srim.C.in"
+#  "${CMAKE_SOURCE_DIR}/macros/load_srim.C"
+#  @ONLY
+#)
+#
+#configure_file(
+#  "${CMAKE_CURRENT_SOURCE_DIR}/templates/plot_dee.C.in"
+#  "${CMAKE_SOURCE_DIR}/macros/plot_dee.C"
+#  @ONLY
+#)
 
 
 # make uninstall
