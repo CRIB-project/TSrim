@@ -9,5 +9,5 @@
     gSystem->SetIncludePath(incpath);
 
     gSystem->Load("libSrim");
-    gROOT->ProcessLine(".L @CMAKE_SOURCE_DIR@/macros/load_srim.C");
+    // gROOT->ProcessLine(".L @CMAKE_SOURCE_DIR@/macros/load_srim.C");
 }
