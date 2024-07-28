@@ -169,8 +169,8 @@ endif()
 
 # ...
 
-# NOTE: library name is not TSrim, but Srim
-target_link_libraries(${TARGET_NAME} PRIVATE Srim)
+# NOTE: library name is TSrim::Srim
+target_link_libraries(${TARGET_NAME}  TSrim::Srim)
 ```
 
 # Range database

@@ -107,26 +107,6 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/this${PROJECT_NAME}.sh
         DESTINATION bin)
 # ============================================================
 
-# configure
-#configure_file(
-#  "${CMAKE_CURRENT_SOURCE_DIR}/templates/rootlogon.C.in"
-#  "${CMAKE_SOURCE_DIR}/.rootlogon.C"
-#  @ONLY
-#)
-#
-#configure_file(
-#  "${CMAKE_CURRENT_SOURCE_DIR}/templates/load_srim.C.in"
-#  "${CMAKE_SOURCE_DIR}/macros/load_srim.C"
-#  @ONLY
-#)
-#
-#configure_file(
-#  "${CMAKE_CURRENT_SOURCE_DIR}/templates/plot_dee.C.in"
-#  "${CMAKE_SOURCE_DIR}/macros/plot_dee.C"
-#  @ONLY
-#)
-
-
 # make uninstall
 add_custom_target("uninstall" COMMENT "Uninstall installed files")
 add_custom_command(
