@@ -22,6 +22,7 @@ We recommend the polynomial degree of 16 for the moment, which guarantees the de
 
 
 # Configuration and Install
+NOTE: require C++17
 
 ## Building with Makefile
 

@@ -25,7 +25,7 @@ using namespace amdc;
 
 ClassImp(TSrim);
 ///////////////////////////////////////////////////////////////////////////////
-TSrim::TSrim(){};
+TSrim::TSrim() {};
 TSrim::TSrim(const char *name, const Int_t npol, const char *datafile) {
     TString fn_name = Form("pol%d", npol);
     Double_t dummy;
@@ -492,7 +492,7 @@ void TSrim::ShowMatNuclList() {
             break;
         }
         std::cout << Form("%s, Z: %d(%s)-%d(%s), N: %d-%d, A: %d-%d", matlist[k].Data(),
-                          Zmin, GetEl(Zmin), Zmax, GetEl(Zmax), Nmin, Nmax, Amin, Amax)
+                          Zmin, GetEl(Zmin).c_str(), Zmax, GetEl(Zmax).c_str(), Nmin, Nmax, Amin, Amax)
                   << std::endl;
     }
 }
