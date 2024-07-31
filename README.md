@@ -22,6 +22,7 @@ We recommend the polynomial degree of 16 for the moment, which guarantees the de
 
 
 # Configuration and Install
+NOTE: require C++17
 
 ## Building with Makefile
 
@@ -169,8 +170,8 @@ endif()
 
 # ...
 
-# NOTE: library name is not TSrim, but Srim
-target_link_libraries(${TARGET_NAME} PRIVATE Srim)
+# NOTE: library name is TSrim::Srim
+target_link_libraries(${TARGET_NAME}  TSrim::Srim)
 ```
 
 # Range database
