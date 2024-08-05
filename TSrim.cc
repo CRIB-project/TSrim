@@ -179,6 +179,44 @@ Double_t TSrim::RangePu(Int_t Z, Int_t A, Double_t Epu, TString mat, Double_t P,
     return this->TSrim::Range(Z, A, Epu * Mass(Z, A), mat, P, T);
 }
 ///////////////////////////////////////////////////////////////////////////////
+Double_t TSrim::f(Double_t x, Double_t *c, Int_t npar) {
+    Double_t y = 0;
+    for (Int_t i = npar; i > 0; i--)
+        y = (c[i] + y) * x;
+    y += c[0];
+    return y;
+}
+Double_t TSrim::dfdx(Double_t x, Double_t *c, Int_t npar) {
+    Double_t y = 0;
+    for (Int_t i = npar - 1; i > 1; i--)
+        y = (i * c[i] + y) * x;
+    y += c[1];
+    return y;
+}
+/////////////
+Double_t TSrim::GetXNewton(Int_t n, Double_t y, Double_t epsilon, Int_t maxiter) {
+    //			   Double_t *c, Int_t npar) {
+    Double_t *c = this->at(n).GetParameters();
+    Int_t npar = this->at(n).GetNpar();
+    if (abs(c[0] - y) < epsilon) {
+        return 0;
+    }
+    Double_t x0 = 0.;
+    Double_t x1 = -(c[0] - y) / c[1];
+    x0 = x1;
+    for (Int_t j = 0; j < maxiter - 1; j++) {
+        // x1 = x0 - (f.Eval(x0) - y) / TSrim::dfdx(x0, c, npar);
+        // x1 = x0 - (this->at(n).Eval(x0) - y) / TSrim::dfdx(x0, c, npar);
+        x1 = x0 - (TSrim::f(x0, c, npar) - y) / TSrim::dfdx(x0, c, npar);
+        if (abs(x1 / x0 - 1.) < epsilon) {
+            // if (abs(f.Eval(x1) - y) < epsilon) {
+            break;
+        }
+        x0 = x1;
+    }
+    return x1;
+}
+/////////////
 Double_t TSrim::RangeToE(Int_t Z, Int_t A, TString mat, Double_t thk) {
     return this->TSrim::RangeToE(Z, A, mat, thk, TSrim::P1, TSrim::T0);
 }
@@ -189,8 +227,15 @@ Double_t TSrim::RangeToE(Int_t Z, Int_t A, TString mat, Double_t thk,
         return 0.;
     } else {
         for (decltype(this->size()) i = 0; i < this->size(); i++) {
-            if (!strcmp(this->at(i).GetName(), Form("%d-%d_%s", Z, A, mat.Data())))
-                return pow(10, this->at(i).GetX(log10(thk * fd)));
+            if (!strcmp(this->at(i).GetName(), Form("%d-%d_%s", Z, A, mat.Data()))) {
+	      return pow(10, this->at(i).GetX(log10(thk * fd)));
+                // this->at(i).SetNpx(20);
+                // return pow(10, this->at(i).GetX(log10(thk * fd), TSrim::log10Emin,
+                // 				    TSrim::log10Emaxpu * Mass(Z, A),
+                // 				    1.e-6,100));
+                // return pow(10, this->TSrim::GetXNewton(i, log10(thk * fd),
+                //                                        1.e-8, 20)); //, c, npar));
+            }
         }
         std::cout << "No data in the range list" << std::endl;
         // exit(0);
@@ -239,7 +284,7 @@ Double_t TSrim::EnergyNew(Int_t Z, Int_t A, Double_t Eold, TString mat,
 }
 Double_t TSrim::EnergyNew(Int_t Z, Int_t A, Double_t Eold, TString mat,
                           Double_t thk, Double_t P, Double_t T) {
-    Double_t fd = TSrim::T0 / T * P / TSrim::P1;
+  //Double_t fd = TSrim::T0 / T * P / TSrim::P1;
     if (Eold < TSrim::Emin) {
         std::cout << "Energy is too low" << std::endl;
         return 0.;
@@ -256,16 +301,17 @@ Double_t TSrim::EnergyNew(Int_t Z, Int_t A, Double_t Eold, TString mat,
                 Double_t Rold = this->TSrim::Range(Z, A, Eold, mat, P, T);
                 Double_t Rnew = Rold - thk;
 
-                if (Rnew <= TSrim::Rmin)
-                    return 0.;
-                else
-                    return pow(10, this->at(i).GetX(log10(Rnew * fd), TSrim::log10Emin,
-                                                    TSrim::log10Emaxpu * Mass(Z, A)));
+                // if (Rnew <= TSrim::Rmin)
+                //     return 0.;
+                // else
+                //     return pow(10, this->at(i).GetX(log10(Rnew * fd), TSrim::log10Emin,
+                //                                     TSrim::log10Emaxpu * Mass(Z, A)));
+		return this->RangeToE(Z, A, mat, Rnew, P, T);
             }
         }
-        std::cout << "No data in the range list" << std::endl;
-        // exit(0);
-        return TSrim::dummy;
+        // std::cout << "No data in the range list" << std::endl;
+        // // exit(0);
+	return TSrim::dummy;
     }
 }
 Double_t TSrim::ENew(Int_t Z, Int_t A, Double_t Eold, TString mat,

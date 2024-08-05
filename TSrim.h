@@ -26,6 +26,11 @@ class TSrim : public std::vector<TF1> {
                      Double_t T); // for gas
     //////////////////////////////////////////////////////////////////////////
     // Energy for a specified range in a material of an ion
+    Double_t f(Double_t x, Double_t *c, Int_t npar);
+    Double_t dfdx(Double_t x, Double_t *c, Int_t npar);
+    Double_t GetXNewton(Int_t n, Double_t y, Double_t epsilon, Int_t maxiter);
+    //, Double_t *c, Int_t npar);
+
     Double_t RangeToE(Int_t Z, Int_t A, TString mat, Double_t thk);
     Double_t RangeToE(Int_t Z, Int_t A, TString mat, Double_t thk, Double_t P,
                       Double_t T); // for gas
