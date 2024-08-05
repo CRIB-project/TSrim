@@ -228,13 +228,13 @@ Double_t TSrim::RangeToE(Int_t Z, Int_t A, TString mat, Double_t thk,
     } else {
         for (decltype(this->size()) i = 0; i < this->size(); i++) {
             if (!strcmp(this->at(i).GetName(), Form("%d-%d_%s", Z, A, mat.Data()))) {
-	      return pow(10, this->at(i).GetX(log10(thk * fd)));
+	      //return pow(10, this->at(i).GetX(log10(thk * fd)));
                 // this->at(i).SetNpx(20);
                 // return pow(10, this->at(i).GetX(log10(thk * fd), TSrim::log10Emin,
                 // 				    TSrim::log10Emaxpu * Mass(Z, A),
                 // 				    1.e-6,100));
-                // return pow(10, this->TSrim::GetXNewton(i, log10(thk * fd),
-                //                                        1.e-8, 20)); //, c, npar));
+                return pow(10, this->TSrim::GetXNewton(i, log10(thk * fd),
+                                                       1.e-8, 20)); //, c, npar));
             }
         }
         std::cout << "No data in the range list" << std::endl;
