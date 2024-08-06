@@ -14,5 +14,9 @@ TSrimDict_rdict.pcm
 
 # template
 
+# python
+.venv
+
 # others
 .cmake-format
+*.C
