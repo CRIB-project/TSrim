@@ -195,21 +195,19 @@ Double_t TSrim::dfdx(Double_t x, Double_t *c, Int_t npar) {
 }
 /////////////
 Double_t TSrim::GetXNewton(Int_t n, Double_t y, Double_t epsilon, Int_t maxiter) {
-    //			   Double_t *c, Int_t npar) {
     Double_t *c = this->at(n).GetParameters();
     Int_t npar = this->at(n).GetNpar();
-    if (abs(c[0] - y) < epsilon) {
+    if (fabs(c[0] - y) < epsilon) {
         return 0;
     }
     Double_t x0 = 0.;
     Double_t x1 = -(c[0] - y) / c[1];
     x0 = x1;
     for (Int_t j = 0; j < maxiter - 1; j++) {
-        // x1 = x0 - (f.Eval(x0) - y) / TSrim::dfdx(x0, c, npar);
         // x1 = x0 - (this->at(n).Eval(x0) - y) / TSrim::dfdx(x0, c, npar);
         x1 = x0 - (TSrim::f(x0, c, npar) - y) / TSrim::dfdx(x0, c, npar);
-        if (abs(x1 / x0 - 1.) < epsilon) {
-            // if (abs(f.Eval(x1) - y) < epsilon) {
+        if (fabs(x1 / x0 - 1.) < epsilon) {
+            // if (fabs(f.Eval(x1) - y) < epsilon) {
             break;
         }
         x0 = x1;
@@ -247,7 +245,7 @@ Double_t TSrim::RangeToEPu(Int_t Z, Int_t A, TString mat, Double_t thk) {
 }
 Double_t TSrim::RangeToEPu(Int_t Z, Int_t A, TString mat, Double_t thk,
                            Double_t P, Double_t T) { // for gas
-    return this->TSrim::RangeToE(Z, A, mat, thk, P1, T0) / Mass(Z, A);
+    return this->TSrim::RangeToE(Z, A, mat, thk, P, T) / Mass(Z, A);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
