@@ -2,6 +2,8 @@
 #define __TSRIM
 
 #include <TF1.h>
+#include <string>
+#include <unordered_map>
 #include <vector>
 
 class TSrim : public std::vector<TF1> {
@@ -26,11 +28,6 @@ class TSrim : public std::vector<TF1> {
                      Double_t T); // for gas
     //////////////////////////////////////////////////////////////////////////
     // Energy for a specified range in a material of an ion
-    Double_t f(Double_t x, Double_t *c, Int_t npar);
-    Double_t dfdx(Double_t x, Double_t *c, Int_t npar);
-    Double_t GetXNewton(Int_t n, Double_t y, Double_t epsilon, Int_t maxiter);
-    //, Double_t *c, Int_t npar);
-
     Double_t RangeToE(Int_t Z, Int_t A, TString mat, Double_t thk);
     Double_t RangeToE(Int_t Z, Int_t A, TString mat, Double_t thk, Double_t P,
                       Double_t T); // for gas
@@ -119,6 +116,20 @@ class TSrim : public std::vector<TF1> {
     const Double_t log10Emaxpu = log10(Emaxpu);
     const Double_t Rmin = 0.00001; // Range > 10 nm: To avoid too large EnergyNew
     const Double_t dummy = -1000.;
+
+    /// @brief compute the pol16 Eval and GetX
+    Double_t f(Double_t x, Double_t *c, Int_t npar);
+    Double_t dfdx(Double_t x, Double_t *c, Int_t npar);
+    Double_t GetXNewton(Int_t n, Double_t y, Double_t epsilon, Int_t maxiter);
+    //, Double_t *c, Int_t npar);
+
+    /// @brief for mapping the self vector index from (Z, A, matID) combination
+    Int_t Nmat;
+    std::unordered_map<std::string, int> mat_mapping;
+    std::unordered_map<std::size_t, int> self_mapping;
+    std::size_t get_key(int Z, int A, int matID) {
+        return (static_cast<std::size_t>(Z) << 17) | (static_cast<std::size_t>(A) << 7) | static_cast<std::size_t>(matID);
+    }
 
     ClassDef(TSrim, 1);
 };
