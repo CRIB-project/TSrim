@@ -12,40 +12,38 @@ class TSrim : public std::vector<TF1> {
     // Constructors
     TSrim();
     TSrim(const char *name, const Int_t npol, const char *datafile);
-    TSrim(const char *name, const Int_t npol, const char *datafile, Int_t Z,
-          Int_t A);
-    TSrim(const char *name, const Int_t npol, const char *datafile, Int_t Zmin,
-          Int_t Amin, Int_t Zmax, Int_t Amax);
+    TSrim(const char *name, const Int_t npol, const char *datafile,
+          Int_t Z, Int_t A);
+    TSrim(const char *name, const Int_t npol, const char *datafile,
+          Int_t Zmin, Int_t Amin, Int_t Zmax, Int_t Amax);
     virtual ~TSrim();
     //////////////////////////////////////////////////////////////////////////
     // Range in a material of an ion at an energy
     Double_t Range(Int_t Z, Int_t A, Double_t E, TString mat);
-    Double_t Range(Int_t Z, Int_t A, Double_t E, TString mat, Double_t P,
-                   Double_t T); // for gas
+    Double_t Range(Int_t Z, Int_t A, Double_t E, TString mat,
+                   Double_t P, Double_t T); // for gas
     // Energy per nucleon
     Double_t RangePu(Int_t Z, Int_t A, Double_t Epu, TString mat);
-    Double_t RangePu(Int_t Z, Int_t A, Double_t Epu, TString mat, Double_t P,
-                     Double_t T); // for gas
+    Double_t RangePu(Int_t Z, Int_t A, Double_t Epu, TString mat,
+                     Double_t P, Double_t T); // for gas
     //////////////////////////////////////////////////////////////////////////
     // Energy for a specified range in a material of an ion
     Double_t RangeToE(Int_t Z, Int_t A, TString mat, Double_t thk);
-    Double_t RangeToE(Int_t Z, Int_t A, TString mat, Double_t thk, Double_t P,
-                      Double_t T); // for gas
+    Double_t RangeToE(Int_t Z, Int_t A, TString mat, Double_t thk,
+                      Double_t P, Double_t T); // for gas
     // Energy per nucleon
     Double_t RangeToEPu(Int_t Z, Int_t A, TString mat, Double_t thk);
-    Double_t RangeToEPu(Int_t Z, Int_t A, TString mat, Double_t thk, Double_t P,
-                        Double_t T); // for gas
+    Double_t RangeToEPu(Int_t Z, Int_t A, TString mat, Double_t thk,
+                        Double_t P, Double_t T); // for gas
     //////////////////////////////////////////////////////////////////////////
     // Energy of an ion after a material with a specified thickness
-    Double_t EnergyNew(Int_t Z, Int_t A, Double_t Eold, TString mat,
-                       Double_t thk);
+    Double_t EnergyNew(Int_t Z, Int_t A, Double_t Eold, TString mat, Double_t thk);
     Double_t EnergyNew(Int_t Z, Int_t A, Double_t Eold, TString mat, Double_t thk,
                        Double_t P, Double_t T); // for gas
     // Energy per nucleon
-    Double_t EnergyNewPu(Int_t Z, Int_t A, Double_t Eoldpu, TString mat,
-                         Double_t thk);
-    Double_t EnergyNewPu(Int_t Z, Int_t A, Double_t Eoldpu, TString mat,
-                         Double_t thk, Double_t P, Double_t T); // for gas
+    Double_t EnergyNewPu(Int_t Z, Int_t A, Double_t Eoldpu, TString mat, Double_t thk);
+    Double_t EnergyNewPu(Int_t Z, Int_t A, Double_t Eoldpu, TString mat, Double_t thk,
+                         Double_t P, Double_t T); // for gas
     // Aliases
     Double_t ENew(Int_t Z, Int_t A, Double_t Eold, TString mat, Double_t thk);
     Double_t ENew(Int_t Z, Int_t A, Double_t Eold, TString mat, Double_t thk,
@@ -56,22 +54,19 @@ class TSrim : public std::vector<TF1> {
                     Double_t P, Double_t T); // for gas
     //////////////////////////////////////////////////////////////////////////
     // Energy loss of an ion in a material with a specified thickness
-    Double_t EnergyLoss(Int_t Z, Int_t A, Double_t Eold, TString mat,
-                        Double_t thk);
-    Double_t EnergyLoss(Int_t Z, Int_t A, Double_t Eold, TString mat,
-                        Double_t thk, Double_t P, Double_t T); // for gas
+    Double_t EnergyLoss(Int_t Z, Int_t A, Double_t Eold, TString mat, Double_t thk);
+    Double_t EnergyLoss(Int_t Z, Int_t A, Double_t Eold, TString mat, Double_t thk,
+                        Double_t P, Double_t T); // for gas
     // Energy per nucleon
-    Double_t EnergyLossPu(Int_t Z, Int_t A, Double_t Eoldpu, TString mat,
-                          Double_t thk);
-    Double_t EnergyLossPu(Int_t Z, Int_t A, Double_t Eoldpu, TString mat,
-                          Double_t thk, Double_t P, Double_t T); // for gas
+    Double_t EnergyLossPu(Int_t Z, Int_t A, Double_t Eoldpu, TString mat, Double_t thk);
+    Double_t EnergyLossPu(Int_t Z, Int_t A, Double_t Eoldpu, TString mat, Double_t thk,
+                          Double_t P, Double_t T); // for gas
     // Aliases
     Double_t ELoss(Int_t Z, Int_t A, Double_t Eold, TString mat, Double_t thk);
     Double_t ELoss(Int_t Z, Int_t A, Double_t Eold, TString mat, Double_t thk,
                    Double_t P, Double_t T); // for gas
     // Aliases
-    Double_t ELossPu(Int_t Z, Int_t A, Double_t Eoldpu, TString mat,
-                     Double_t thk);
+    Double_t ELossPu(Int_t Z, Int_t A, Double_t Eoldpu, TString mat, Double_t thk);
     Double_t ELossPu(Int_t Z, Int_t A, Double_t Eoldpu, TString mat, Double_t thk,
                      Double_t P, Double_t T); // for gas
     //////////////////////////////////////////////////////////////////////////
@@ -106,6 +101,15 @@ class TSrim : public std::vector<TF1> {
     // To show material list and the nuclide range
     void ShowMatNuclList();
     //////////////////////////////////////////////////////////////////////////
+
+    /// @brief Add elements to itself
+    void AddElement(const char *name, const Int_t npol, const char *datafile);
+    void AddElement(const char *name, const Int_t npol, const char *datafile,
+                    Int_t Z, Int_t A);
+    void AddElement(const char *name, const Int_t npol, const char *datafile,
+                    Int_t Zmin, Int_t Amin, Int_t Zmax, Int_t Amax);
+
+    Int_t GetNmaterial() const { return Nmat; }
 
   private:
     const Double_t T0 = 273.15;
