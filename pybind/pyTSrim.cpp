@@ -30,9 +30,6 @@ NB_MODULE(pyTSrim, m) {
         .def("RangePu", [](TSrim &self, Int_t Z, Int_t A, Double_t Epu, const std::string &mat, Double_t P, Double_t T) {
             return self.RangePu(Z, A, Epu, string_to_tstring(mat), P, T);
         })
-        .def("f", &TSrim::f)
-        .def("dfdx", &TSrim::dfdx)
-        .def("GetXNewton", &TSrim::GetXNewton)
         .def("RangeToE", [](TSrim &self, Int_t Z, Int_t A, const std::string &mat, Double_t thk) {
             return self.RangeToE(Z, A, string_to_tstring(mat), thk);
         })

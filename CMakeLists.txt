@@ -48,7 +48,23 @@ include(${ROOT_USE_FILE})
 link_directories(${ROOTSYS}/lib)
 
 # ====================== MAIN =======================
-# make library
+# Mass library
+set(MASSLIBNAME Mass)
+add_library(${MASSLIBNAME} SHARED Mass.cc)
+target_include_directories(
+  ${MASSLIBNAME} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+                    $<INSTALL_INTERFACE:include>)
+
+set_target_properties(${MASSLIBNAME} PROPERTIES PUBLIC_HEADER "${HEADERS}")
+
+install(
+  TARGETS ${MASSLIBNAME}
+  INCLUDES DESTINATION include
+  PUBLIC_HEADER DESTINATION include
+  LIBRARY DESTINATION lib)
+
+
+# TSrim library
 set(LIBNAME Srim)
 # source files for the library
 set(SOURCES TSrim.cc Mass.cc)
@@ -102,6 +118,7 @@ configure_file(templates/this${PROJECT_NAME}.sh.in this${PROJECT_NAME}.sh @ONLY)
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/this${PROJECT_NAME}.sh
         DESTINATION bin)
+
 # ============================================================
 # python setting
 # reference: nanobind https://nanobind.readthedocs.io/en/latest/building.html
