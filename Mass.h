@@ -3,7 +3,6 @@
 
 #include <array>
 #include <string>
-#include <unordered_map>
 
 namespace amdc {
 const double amu = 931.478;
@@ -3585,138 +3584,278 @@ constexpr std::array<std::array<double, amdc::maxA + 1>, amdc::maxZ + 1> initial
 
 constexpr auto masstab = initializeMassTable();
 
-const std::unordered_map<std::string, int> map_ElToZ =
-    {{"n", 0},
-     {"H", 1},
-     {"He", 2},
-     {"Li", 3},
-     {"Be", 4},
-     {"B", 5},
-     {"C", 6},
-     {"N", 7},
-     {"O", 8},
-     {"F", 9},
-     {"Ne", 10},
-     {"Na", 11},
-     {"Mg", 12},
-     {"Al", 13},
-     {"Si", 14},
-     {"P", 15},
-     {"S", 16},
-     {"Cl", 17},
-     {"Ar", 18},
-     {"K", 19},
-     {"Ca", 20},
-     {"Sc", 21},
-     {"Ti", 22},
-     {"V", 23},
-     {"Cr", 24},
-     {"Mn", 25},
-     {"Fe", 26},
-     {"Co", 27},
-     {"Ni", 28},
-     {"Cu", 29},
-     {"Zn", 30},
-     {"Ga", 31},
-     {"Ge", 32},
-     {"As", 33},
-     {"Se", 34},
-     {"Br", 35},
-     {"Kr", 36},
-     {"Rb", 37},
-     {"Sr", 38},
-     {"Y", 39},
-     {"Zr", 40},
-     {"Nb", 41},
-     {"Mo", 42},
-     {"Tc", 43},
-     {"Ru", 44},
-     {"Rh", 45},
-     {"Pd", 46},
-     {"Ag", 47},
-     {"Cd", 48},
-     {"In", 49},
-     {"Sn", 50},
-     {"Sb", 51},
-     {"Te", 52},
-     {"I", 53},
-     {"Xe", 54},
-     {"Cs", 55},
-     {"Ba", 56},
-     {"La", 57},
-     {"Ce", 58},
-     {"Pr", 59},
-     {"Nd", 60},
-     {"Pm", 61},
-     {"Sm", 62},
-     {"Eu", 63},
-     {"Gd", 64},
-     {"Tb", 65},
-     {"Dy", 66},
-     {"Ho", 67},
-     {"Er", 68},
-     {"Tm", 69},
-     {"Yb", 70},
-     {"Lu", 71},
-     {"Hf", 72},
-     {"Ta", 73},
-     {"W", 74},
-     {"Re", 75},
-     {"Os", 76},
-     {"Ir", 77},
-     {"Pt", 78},
-     {"Au", 79},
-     {"Hg", 80},
-     {"Tl", 81},
-     {"Pb", 82},
-     {"Bi", 83},
-     {"Po", 84},
-     {"At", 85},
-     {"Rn", 86},
-     {"Fr", 87},
-     {"Ra", 88},
-     {"Ac", 89},
-     {"Th", 90},
-     {"Pa", 91},
-     {"U", 92},
-     {"Np", 93},
-     {"Pu", 94},
-     {"Am", 95},
-     {"Cm", 96},
-     {"Bk", 97},
-     {"Cf", 98},
-     {"Es", 99},
-     {"Fm", 100},
-     {"Md", 101},
-     {"No", 102},
-     {"Lr", 103},
-     {"Rf", 104},
-     {"Db", 105},
-     {"Sg", 106},
-     {"Bh", 107},
-     {"Hs", 108},
-     {"Mt", 109},
-     {"Ds", 110},
-     {"Rg", 111},
-     {"Cn", 112},
-     {"Nh", 113},
-     {"Fl", 114},
-     {"Mc", 115},
-     {"Lv", 116},
-     {"Ts", 117},
-     {"Og", 118}};
+constexpr int isotope_hash(char first, char second) {
+    if (first == 'n' && second == 0) {
+        return 0;
+    }
+    return ((first - 'A') << 5) | (second ? second - 'a' + 1 : 0);
+}
+
+constexpr std::array<int, 32 * 26> initializeHashTable() {
+    std::array<int, 32 * 26> arr = {};
+
+    for (auto &element : arr) {
+        element = -1;
+    }
+
+    arr[isotope_hash('n', 0)] = 0;
+    arr[isotope_hash('H', 0)] = 1;
+    arr[isotope_hash('H', 'e')] = 2;
+    arr[isotope_hash('L', 'i')] = 3;
+    arr[isotope_hash('B', 'e')] = 4;
+    arr[isotope_hash('B', 0)] = 5;
+    arr[isotope_hash('C', 0)] = 6;
+    arr[isotope_hash('N', 0)] = 7;
+    arr[isotope_hash('O', 0)] = 8;
+    arr[isotope_hash('F', 0)] = 9;
+    arr[isotope_hash('N', 'e')] = 10;
+    arr[isotope_hash('N', 'a')] = 11;
+    arr[isotope_hash('M', 'g')] = 12;
+    arr[isotope_hash('A', 'l')] = 13;
+    arr[isotope_hash('S', 'i')] = 14;
+    arr[isotope_hash('P', 0)] = 15;
+    arr[isotope_hash('S', 0)] = 16;
+    arr[isotope_hash('C', 'l')] = 17;
+    arr[isotope_hash('A', 'r')] = 18;
+    arr[isotope_hash('K', 0)] = 19;
+    arr[isotope_hash('C', 'a')] = 20;
+    arr[isotope_hash('S', 'c')] = 21;
+    arr[isotope_hash('T', 'i')] = 22;
+    arr[isotope_hash('V', 0)] = 23;
+    arr[isotope_hash('C', 'r')] = 24;
+    arr[isotope_hash('M', 'n')] = 25;
+    arr[isotope_hash('F', 'e')] = 26;
+    arr[isotope_hash('C', 'o')] = 27;
+    arr[isotope_hash('N', 'i')] = 28;
+    arr[isotope_hash('C', 'u')] = 29;
+    arr[isotope_hash('Z', 'n')] = 30;
+    arr[isotope_hash('G', 'a')] = 31;
+    arr[isotope_hash('G', 'e')] = 32;
+    arr[isotope_hash('A', 's')] = 33;
+    arr[isotope_hash('S', 'e')] = 34;
+    arr[isotope_hash('B', 'r')] = 35;
+    arr[isotope_hash('K', 'r')] = 36;
+    arr[isotope_hash('R', 'b')] = 37;
+    arr[isotope_hash('S', 'r')] = 38;
+    arr[isotope_hash('Y', 0)] = 39;
+    arr[isotope_hash('Z', 'r')] = 40;
+    arr[isotope_hash('N', 'b')] = 41;
+    arr[isotope_hash('M', 'o')] = 42;
+    arr[isotope_hash('T', 'c')] = 43;
+    arr[isotope_hash('R', 'u')] = 44;
+    arr[isotope_hash('R', 'h')] = 45;
+    arr[isotope_hash('P', 'd')] = 46;
+    arr[isotope_hash('A', 'g')] = 47;
+    arr[isotope_hash('C', 'd')] = 48;
+    arr[isotope_hash('I', 'n')] = 49;
+    arr[isotope_hash('S', 'n')] = 50;
+    arr[isotope_hash('S', 'b')] = 51;
+    arr[isotope_hash('T', 'e')] = 52;
+    arr[isotope_hash('I', 0)] = 53;
+    arr[isotope_hash('X', 'e')] = 54;
+    arr[isotope_hash('C', 's')] = 55;
+    arr[isotope_hash('B', 'a')] = 56;
+    arr[isotope_hash('L', 'a')] = 57;
+    arr[isotope_hash('C', 'e')] = 58;
+    arr[isotope_hash('P', 'r')] = 59;
+    arr[isotope_hash('N', 'd')] = 60;
+    arr[isotope_hash('P', 'm')] = 61;
+    arr[isotope_hash('S', 'm')] = 62;
+    arr[isotope_hash('E', 'u')] = 63;
+    arr[isotope_hash('G', 'd')] = 64;
+    arr[isotope_hash('T', 'b')] = 65;
+    arr[isotope_hash('D', 'y')] = 66;
+    arr[isotope_hash('H', 'o')] = 67;
+    arr[isotope_hash('E', 'r')] = 68;
+    arr[isotope_hash('T', 'm')] = 69;
+    arr[isotope_hash('Y', 'b')] = 70;
+    arr[isotope_hash('L', 'u')] = 71;
+    arr[isotope_hash('H', 'f')] = 72;
+    arr[isotope_hash('T', 'a')] = 73;
+    arr[isotope_hash('W', 0)] = 74;
+    arr[isotope_hash('R', 'e')] = 75;
+    arr[isotope_hash('O', 's')] = 76;
+    arr[isotope_hash('I', 'r')] = 77;
+    arr[isotope_hash('P', 't')] = 78;
+    arr[isotope_hash('A', 'u')] = 79;
+    arr[isotope_hash('H', 'g')] = 80;
+    arr[isotope_hash('T', 'l')] = 81;
+    arr[isotope_hash('P', 'b')] = 82;
+    arr[isotope_hash('B', 'i')] = 83;
+    arr[isotope_hash('P', 'o')] = 84;
+    arr[isotope_hash('A', 't')] = 85;
+    arr[isotope_hash('R', 'n')] = 86;
+    arr[isotope_hash('F', 'r')] = 87;
+    arr[isotope_hash('R', 'a')] = 88;
+    arr[isotope_hash('A', 'c')] = 89;
+    arr[isotope_hash('T', 'h')] = 90;
+    arr[isotope_hash('P', 'a')] = 91;
+    arr[isotope_hash('U', 0)] = 92;
+    arr[isotope_hash('N', 'p')] = 93;
+    arr[isotope_hash('P', 'u')] = 94;
+    arr[isotope_hash('A', 'm')] = 95;
+    arr[isotope_hash('C', 'm')] = 96;
+    arr[isotope_hash('B', 'k')] = 97;
+    arr[isotope_hash('C', 'f')] = 98;
+    arr[isotope_hash('E', 's')] = 99;
+    arr[isotope_hash('F', 'm')] = 100;
+    arr[isotope_hash('M', 'd')] = 101;
+    arr[isotope_hash('N', 'o')] = 102;
+    arr[isotope_hash('L', 'r')] = 103;
+    arr[isotope_hash('R', 'f')] = 104;
+    arr[isotope_hash('D', 'b')] = 105;
+    arr[isotope_hash('S', 'g')] = 106;
+    arr[isotope_hash('B', 'h')] = 107;
+    arr[isotope_hash('H', 's')] = 108;
+    arr[isotope_hash('M', 't')] = 109;
+    arr[isotope_hash('D', 's')] = 110;
+    arr[isotope_hash('R', 'g')] = 111;
+    arr[isotope_hash('C', 'n')] = 112;
+    arr[isotope_hash('N', 'h')] = 113;
+    arr[isotope_hash('F', 'l')] = 114;
+    arr[isotope_hash('M', 'c')] = 115;
+    arr[isotope_hash('L', 'v')] = 116;
+    arr[isotope_hash('T', 's')] = 117;
+    arr[isotope_hash('O', 'g')] = 118;
+
+    return arr;
+};
+
+constexpr auto isotope_table = initializeHashTable();
+
+constexpr const char *element_names[maxZ + 1] = {
+    "n",
+    "H",
+    "He",
+    "Li",
+    "Be",
+    "B",
+    "C",
+    "N",
+    "O",
+    "F",
+    "Ne",
+    "Na",
+    "Mg",
+    "Al",
+    "Si",
+    "P",
+    "S",
+    "Cl",
+    "Ar",
+    "K",
+    "Ca",
+    "Sc",
+    "Ti",
+    "V",
+    "Cr",
+    "Mn",
+    "Fe",
+    "Co",
+    "Ni",
+    "Cu",
+    "Zn",
+    "Ga",
+    "Ge",
+    "As",
+    "Se",
+    "Br",
+    "Kr",
+    "Rb",
+    "Sr",
+    "Y",
+    "Zr",
+    "Nb",
+    "Mo",
+    "Tc",
+    "Ru",
+    "Rh",
+    "Pd",
+    "Ag",
+    "Cd",
+    "In",
+    "Sn",
+    "Sb",
+    "Te",
+    "I",
+    "Xe",
+    "Cs",
+    "Ba",
+    "La",
+    "Ce",
+    "Pr",
+    "Nd",
+    "Pm",
+    "Sm",
+    "Eu",
+    "Gd",
+    "Tb",
+    "Dy",
+    "Ho",
+    "Er",
+    "Tm",
+    "Yb",
+    "Lu",
+    "Hf",
+    "Ta",
+    "W",
+    "Re",
+    "Os",
+    "Ir",
+    "Pt",
+    "Au",
+    "Hg",
+    "Tl",
+    "Pb",
+    "Bi",
+    "Po",
+    "At",
+    "Rn",
+    "Fr",
+    "Ra",
+    "Ac",
+    "Th",
+    "Pa",
+    "U",
+    "Np",
+    "Pu",
+    "Am",
+    "Cm",
+    "Bk",
+    "Cf",
+    "Es",
+    "Fm",
+    "Md",
+    "No",
+    "Lr",
+    "Rf",
+    "Db",
+    "Sg",
+    "Bh",
+    "Hs",
+    "Mt",
+    "Ds",
+    "Rg",
+    "Cn",
+    "Nh",
+    "Fl",
+    "Mc",
+    "Lv",
+    "Ts",
+    "Og",
+};
 
 double Mass(int Z, int A);
-double Mass(int A, std::string El);
+double Mass(int A, const std::string &El);
 
 double MassExcess(int Z, int A);
-double MassExcess(int A, std::string El);
+double MassExcess(int A, const std::string &El);
 
 double EBindPu(int Z, int A);
-double EBindPu(int A, std::string El);
+double EBindPu(int A, const std::string &El);
 
 std::string GetEl(int Z);
-int GetZ(std::string El);
+int GetZ(const std::string &El);
 
 } // namespace amdc
 
