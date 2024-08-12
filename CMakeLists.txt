@@ -1,15 +1,16 @@
-# General settings
 if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
   message(FATAL_ERROR "DO NOT BUILD in-tree.")
 endif()
 
+# CMake version required
 if(APPLE)
   cmake_minimum_required(VERSION 3.19 FATAL_ERROR)
 else()
   cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 endif()
 
-project(TSrim)
+# TSrim project setting
+project(TSrim VERSION 0.1.0 LANGUAGES CXX)
 
 # Default installation dir
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
@@ -19,96 +20,26 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 endif()
 
 # require C++17
-enable_language(CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-
-# Global compile options
-add_compile_options(-Wall -Wextra)
-
-# Setting for MacOS (even MacOS, it is possible to use gcc)
-if(${CMAKE_CXX_COMPILER} MATCHES "Xcode")
-  message(STATUS "Configuring for clang")
-else()
-  message(STATUS "Configuring for gcc")
-  set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-as-needed")
-endif()
-
-# -fPIC
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # ROOT settings
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
-
-# ROOT include
 find_package(ROOT REQUIRED)
-
 include(${ROOT_USE_FILE})
-link_directories(${ROOTSYS}/lib)
 
-# ====================== MAIN =======================
-# Mass library
-set(MASSLIBNAME Mass)
-add_library(${MASSLIBNAME} SHARED Mass.cc)
-target_include_directories(
-  ${MASSLIBNAME} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-                    $<INSTALL_INTERFACE:include>)
+add_subdirectory(src_mass)
+add_subdirectory(src_tsrim)
 
-set_target_properties(${MASSLIBNAME} PROPERTIES PUBLIC_HEADER "${HEADERS}")
-
-install(
-  TARGETS ${MASSLIBNAME}
-  INCLUDES DESTINATION include
-  PUBLIC_HEADER DESTINATION include
-  LIBRARY DESTINATION lib)
-
-
-# TSrim library
-set(LIBNAME Srim)
-# source files for the library
-set(SOURCES TSrim.cc Mass.cc)
-
-# header files
-set(HEADERS TSrim.h Mass.h)
-
-# library setting
-add_library(${LIBNAME} SHARED ${SOURCES})
-
-target_include_directories(
-  ${LIBNAME} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-                    $<INSTALL_INTERFACE:include>)
-
-target_link_libraries(${LIBNAME} ${ROOT_LIBRARIES})
-
-root_generate_dictionary(G__${LIBNAME} ${HEADERS} LINKDEF LinkDef.h MODULE
-                         ${LIBNAME})
-
-set_target_properties(${LIBNAME} PROPERTIES PUBLIC_HEADER "${HEADERS}")
-
-install(
-  TARGETS ${LIBNAME}
-  EXPORT ${PROJECT_NAME}Targets
-  INCLUDES DESTINATION include
-  ARCHIVE DESTINATION lib
-  PUBLIC_HEADER DESTINATION include
-  LIBRARY DESTINATION lib)
-
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/lib${LIBNAME}_rdict.pcm
-        DESTINATION lib)
-
-install(
-  EXPORT ${PROJECT_NAME}Targets
-  FILE ${PROJECT_NAME}Targets.cmake
-  NAMESPACE ${PROJECT_NAME}::
-  DESTINATION lib/cmake/${PROJECT_NAME})
-
-configure_file(cmake/${PROJECT_NAME}Config.cmake.in ${PROJECT_NAME}Config.cmake
-               @ONLY)
+# find_package TSrim
+configure_file(templates/${PROJECT_NAME}Config.cmake.in
+               ${PROJECT_NAME}Config.cmake @ONLY)
 
 include(CMakePackageConfigHelpers)
 configure_package_config_file(
-  "cmake/${PROJECT_NAME}Config.cmake.in" "${PROJECT_NAME}Config.cmake"
+  "templates/${PROJECT_NAME}Config.cmake.in" "${PROJECT_NAME}Config.cmake"
   INSTALL_DESTINATION lib/cmake/${PROJECT_NAME})
 
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
@@ -119,9 +50,8 @@ configure_file(templates/this${PROJECT_NAME}.sh.in this${PROJECT_NAME}.sh @ONLY)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/this${PROJECT_NAME}.sh
         DESTINATION bin)
 
-# ============================================================
-# python setting
-# reference: nanobind https://nanobind.readthedocs.io/en/latest/building.html
+# python setting reference: nanobind
+# https://nanobind.readthedocs.io/en/latest/building.html
 if(CMAKE_VERSION VERSION_LESS 3.18)
   set(DEV_MODULE Development)
 else()
@@ -130,16 +60,19 @@ endif()
 
 find_package(Python 3.8 COMPONENTS Interpreter ${DEV_MODULE})
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-  set(CMAKE_BUILD_TYPE Release
+  set(CMAKE_BUILD_TYPE
+      Release
       CACHE STRING "Choose the type of build." FORCE)
-  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY
-               STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release"
+                                               "MinSizeRel" "RelWithDebInfo")
 endif()
+
 if(Python_FOUND)
   # Detect the installed nanobind package and import it into CMake
   execute_process(
     COMMAND "${Python_EXECUTABLE}" -m nanobind --cmake_dir
-    OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE nanobind_ROOT)
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    OUTPUT_VARIABLE nanobind_ROOT)
   find_package(nanobind CONFIG)
   if(nanobind_FOUND)
     message(STATUS "build pyTSrim")

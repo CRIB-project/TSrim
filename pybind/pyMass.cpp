@@ -4,7 +4,7 @@
 
 namespace nb = nanobind;
 
-NB_MODULE(amdc_mass, m) {
+NB_MODULE(pyMass, m) {
     m.def("Mass", nb::overload_cast<int, int>(&amdc::Mass), "Get the mass of an isotope by Z and A");
     m.def("Mass", nb::overload_cast<int, const std::string &>(&amdc::Mass), "Get the mass of an isotope by element symbol and A");
     m.def("MassExcess", nb::overload_cast<int, int>(&amdc::MassExcess), "Get the mass excess by Z and A");

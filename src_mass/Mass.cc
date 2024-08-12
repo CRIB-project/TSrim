@@ -71,10 +71,19 @@ int amdc::GetZ(const std::string &El) {
     char first = El[0];
     char second = (El.length() > 1) ? El[1] : 0;
     int hash = isotope_hash(first, second);
+
+    if (hash < 0 || hash > max_hash - 1) {
+        /// neutron process
+        if (first == 'n' && second == 0) {
+            return 0;
+        }
+        std::cerr << "Invalid element symbol!" << std::endl;
+        return -1000;
+    }
     int Z = isotope_table[hash];
 
     if (Z < 0) {
-        std::cerr << "No such element!" << std::endl;
+        std::cerr << "Invalid element symbol!" << std::endl;
         return -1000;
     }
     return Z;

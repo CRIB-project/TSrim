@@ -3584,21 +3584,21 @@ constexpr std::array<std::array<double, amdc::maxA + 1>, amdc::maxZ + 1> initial
 
 constexpr auto masstab = initializeMassTable();
 
+/// @brief max_hash size is ('Z' - 'A') << 5 -> 800
+/// 'z' - 'a' + 1 -> 26
+/// 800 | 26 -> 826
+/// for the safety, set the size larger than 826
+constexpr int max_hash = 832;
 constexpr int isotope_hash(char first, char second) {
-    if (first == 'n' && second == 0) {
-        return 0;
-    }
     return ((first - 'A') << 5) | (second ? second - 'a' + 1 : 0);
 }
-
-constexpr std::array<int, 32 * 26> initializeHashTable() {
-    std::array<int, 32 * 26> arr = {};
+constexpr std::array<int, max_hash> initializeHashTable() {
+    std::array<int, max_hash> arr = {};
 
     for (auto &element : arr) {
         element = -1;
     }
 
-    arr[isotope_hash('n', 0)] = 0;
     arr[isotope_hash('H', 0)] = 1;
     arr[isotope_hash('H', 'e')] = 2;
     arr[isotope_hash('L', 'i')] = 3;

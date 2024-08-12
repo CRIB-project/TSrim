@@ -1,25 +1,18 @@
-# pyTSrim definition
-# library name
-set(PYLIBNAME pyTSrim)
+# pyMass
+set(PyMassModule pyMass)
 
-# bind file
-set(PYBINDFILE pyTSrim.cpp)
+nanobind_add_module(${PyMassModule} NB_STATIC pyMass.cpp)
+target_compile_options(${PyMassModule} PRIVATE -Wall -Wextra)
+target_include_directories(${PyMassModule} PRIVATE ${CMAKE_SOURCE_DIR}/src_mass)
+target_link_libraries(${PyMassModule} PRIVATE ${MassLibrary})
 
-nanobind_add_module(${PYLIBNAME} NB_STATIC ${PYBINDFILE})
-target_include_directories(${PYLIBNAME} PRIVATE ${CMAKE_SOURCE_DIR})
-target_link_libraries(${PYLIBNAME} PRIVATE ${ROOT_LIBRARY} ${LIBNAME})
+# pyTSrim
+set(PySrimModule pyTSrim)
 
-install(TARGETS ${PYLIBNAME} LIBRARY DESTINATION lib)
+nanobind_add_module(${PySrimModule} NB_STATIC pyTSrim.cpp)
+target_compile_options(${PySrimModule} PRIVATE -Wall -Wextra)
+target_include_directories(${PySrimModule} PRIVATE ${CMAKE_SOURCE_DIR}/src_tsrim)
+target_link_libraries(${PySrimModule} PRIVATE ${ROOT_LIBRARY} ${SrimLibrary})
 
-# amdc_mass definition
-# library name
-set(PYMASSLIBNAME amdc_mass)
-
-# bind file
-set(PYMASSBINDFILE amdc_mass.cpp)
-
-nanobind_add_module(${PYMASSLIBNAME} NB_STATIC ${PYMASSBINDFILE})
-target_include_directories(${PYMASSLIBNAME} PRIVATE ${CMAKE_SOURCE_DIR})
-target_link_libraries(${PYMASSLIBNAME} PRIVATE ${MASSLIBNAME})
-
-install(TARGETS ${PYMASSLIBNAME} LIBRARY DESTINATION lib)
+# install
+install(TARGETS ${PyMassModule} ${PySrimModule} LIBRARY DESTINATION lib)
