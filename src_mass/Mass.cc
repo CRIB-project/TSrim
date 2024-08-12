@@ -5,7 +5,7 @@ using namespace amdc;
 
 double amdc::Mass(int Z, int A) {
     if (Z < 0 || Z > maxZ || A < 0 || A > maxA) {
-        std::cerr << "No such an isotope!" << std::endl;
+        std::cerr << "No such an isotope! (Z, A) = (" << Z << ", " << A << ")" << std::endl;
         return -1000.;
     }
 
@@ -14,7 +14,7 @@ double amdc::Mass(int Z, int A) {
     if (mass > 0)
         return mass;
     else {
-        std::cerr << "No such an isotope!" << std::endl;
+        std::cerr << "No such an isotope! (Z, A) = (" << Z << ", " << A << ")" << std::endl;
         return -1000.;
     }
 }
@@ -22,7 +22,7 @@ double amdc::Mass(int Z, int A) {
 double amdc::Mass(int A, const std::string &El) {
     int Z = GetZ(El);
     if (Z < 0 || A < 0 || A > maxA) {
-        std::cerr << "No such an isotope!" << std::endl;
+        std::cerr << "No such an isotope! (A, El) = (" << A << ", " << El << ")" << std::endl;
         return -1000.;
     }
 
@@ -31,7 +31,7 @@ double amdc::Mass(int A, const std::string &El) {
     if (mass > 0)
         return mass;
     else {
-        std::cerr << "No such an isotope!" << std::endl;
+        std::cerr << "No such an isotope! (A, El) = (" << A << ", " << El << ")" << std::endl;
         return -1000.;
     }
 }
@@ -55,7 +55,7 @@ double amdc::EBindPu(int A, const std::string &El) {
 
 std::string amdc::GetEl(int Z) {
     if (Z < 0 || Z > maxZ) {
-        std::cerr << "No such an isotope!" << std::endl;
+        std::cerr << "No such an isotope! Z = " << Z << std::endl;
         return "X";
     }
 
@@ -64,7 +64,7 @@ std::string amdc::GetEl(int Z) {
 
 int amdc::GetZ(const std::string &El) {
     if (El.empty() || El.length() > 2) {
-        std::cerr << "Invalid element symbol!" << std::endl;
+        std::cerr << "Invalid element symbol! El = " << El << std::endl;
         return -1000;
     }
 
@@ -77,13 +77,13 @@ int amdc::GetZ(const std::string &El) {
         if (first == 'n' && second == 0) {
             return 0;
         }
-        std::cerr << "Invalid element symbol!" << std::endl;
+        std::cerr << "Invalid element symbol! El = " << El << std::endl;
         return -1000;
     }
     int Z = isotope_table[hash];
 
     if (Z < 0) {
-        std::cerr << "Invalid element symbol!" << std::endl;
+        std::cerr << "Invalid element symbol! El = " << El << std::endl;
         return -1000;
     }
     return Z;
