@@ -7,8 +7,6 @@
 #include <iomanip>
 #include <iostream>
 
-using namespace amdc;
-
 /*
   Thickness in mm
   Temperature in K
@@ -61,11 +59,11 @@ Double_t TSrim::Range(Int_t Z, Int_t A, Double_t E, TString mat, Double_t P,
     }
 }
 Double_t TSrim::RangePu(Int_t Z, Int_t A, Double_t Epu, TString mat) {
-    return TSrim::Range(Z, A, Epu * Mass(Z, A), mat);
+    return TSrim::Range(Z, A, Epu * amdc::Mass(Z, A), mat);
 }
 Double_t TSrim::RangePu(Int_t Z, Int_t A, Double_t Epu, TString mat, Double_t P,
                         Double_t T) {
-    return TSrim::Range(Z, A, Epu * Mass(Z, A), mat, P, T);
+    return TSrim::Range(Z, A, Epu * amdc::Mass(Z, A), mat, P, T);
 }
 ///////////////////////////////////////////////////////////////////////////////
 Double_t TSrim::f(Double_t x, Double_t *c, Int_t npar) {
@@ -130,11 +128,11 @@ Double_t TSrim::RangeToE(Int_t Z, Int_t A, TString mat, Double_t thk,
     }
 }
 Double_t TSrim::RangeToEPu(Int_t Z, Int_t A, TString mat, Double_t thk) {
-    return TSrim::RangeToE(Z, A, mat, thk) / Mass(Z, A);
+    return TSrim::RangeToE(Z, A, mat, thk) / amdc::Mass(Z, A);
 }
 Double_t TSrim::RangeToEPu(Int_t Z, Int_t A, TString mat, Double_t thk,
                            Double_t P, Double_t T) { // for gas
-    return TSrim::RangeToE(Z, A, mat, thk, P, T) / Mass(Z, A);
+    return TSrim::RangeToE(Z, A, mat, thk, P, T) / amdc::Mass(Z, A);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -175,7 +173,7 @@ Double_t TSrim::EnergyNew(Int_t Z, Int_t A, Double_t Eold, TString mat,
     if (Eold < TSrim::Emin) {
         std::cout << "Energy is too low" << std::endl;
         return 0.;
-    } else if (Eold > TSrim::Emaxpu * Mass(Z, A)) {
+    } else if (Eold > TSrim::Emaxpu * amdc::Mass(Z, A)) {
         std::cout << "Energy is too high" << std::endl;
         return Eold;
     } else if (Eold <= 0. && thk >= 0.) {
@@ -209,13 +207,13 @@ Double_t TSrim::ENew(Int_t Z, Int_t A, Double_t Eold, TString mat, Double_t thk,
 }
 Double_t TSrim::EnergyNewPu(Int_t Z, Int_t A, Double_t Eoldpu, TString mat,
                             Double_t thk) {
-    return TSrim::EnergyNew(Z, A, Eoldpu * Mass(Z, A), mat, thk) /
-           Mass(Z, A);
+    return TSrim::EnergyNew(Z, A, Eoldpu * amdc::Mass(Z, A), mat, thk) /
+           amdc::Mass(Z, A);
 }
 Double_t TSrim::EnergyNewPu(Int_t Z, Int_t A, Double_t Eoldpu, TString mat,
                             Double_t thk, Double_t P, Double_t T) {
-    return TSrim::EnergyNew(Z, A, Eoldpu * Mass(Z, A), mat, thk, P, T) /
-           Mass(Z, A);
+    return TSrim::EnergyNew(Z, A, Eoldpu * amdc::Mass(Z, A), mat, thk, P, T) /
+           amdc::Mass(Z, A);
 }
 Double_t TSrim::ENewPu(Int_t Z, Int_t A, Double_t Eoldpu, TString mat,
                        Double_t thk) {
@@ -273,13 +271,13 @@ Double_t TSrim::EnergiesToThick(Int_t Z, Int_t A, Double_t Eold, Double_t Enew,
         std::cout << "Gas pressure = 0." << std::endl;
         return TSrim::dummy;
     } else {
-        if (Eold > TSrim::Emaxpu * Mass(Z, A)) {
+        if (Eold > TSrim::Emaxpu * amdc::Mass(Z, A)) {
             std::cout << "Eold is too high" << std::endl;
-            Eold = Emaxpu * Mass(Z, A);
+            Eold = Emaxpu * amdc::Mass(Z, A);
         }
-        if (Enew > TSrim::Emaxpu * Mass(Z, A)) {
+        if (Enew > TSrim::Emaxpu * amdc::Mass(Z, A)) {
             std::cout << "Enew is too high" << std::endl;
-            Enew = Emaxpu * Mass(Z, A);
+            Enew = Emaxpu * amdc::Mass(Z, A);
         }
         Double_t Rold = TSrim::Range(Z, A, Eold, mat, P, T);
         Double_t Rnew = TSrim::Range(Z, A, Enew, mat, P, T);
@@ -293,14 +291,14 @@ Double_t TSrim::EnergiesToThick(Int_t Z, Int_t A, Double_t Eold, Double_t Enew,
 }
 Double_t TSrim::EnergiesToThickPu(Int_t Z, Int_t A, Double_t Eoldpu,
                                   Double_t Enewpu, TString mat) {
-    return TSrim::EnergiesToThick(Z, A, Eoldpu * Mass(Z, A),
-                                  Enewpu * Mass(Z, A), mat);
+    return TSrim::EnergiesToThick(Z, A, Eoldpu * amdc::Mass(Z, A),
+                                  Enewpu * amdc::Mass(Z, A), mat);
 }
 Double_t TSrim::EnergiesToThickPu(Int_t Z, Int_t A, Double_t Eoldpu,
                                   Double_t Enewpu, TString mat, Double_t P,
                                   Double_t T) {
-    return TSrim::EnergiesToThick(Z, A, Eoldpu * Mass(Z, A),
-                                  Enewpu * Mass(Z, A), mat, P, T);
+    return TSrim::EnergiesToThick(Z, A, Eoldpu * amdc::Mass(Z, A),
+                                  Enewpu * amdc::Mass(Z, A), mat, P, T);
 }
 Double_t TSrim::EToThk(Int_t Z, Int_t A, Double_t Eold, Double_t Enew,
                        TString mat) {
@@ -440,7 +438,7 @@ void TSrim::AddElement(const char *name, const Int_t npol, const char *datafile,
             } else {
                 this->emplace_back(TF1(Form("%d-%d_%s", vZ.at(i), vA.at(i), vmat.at(i).Data()),
                                        fn_name.Data(), TSrim::log10Emin,
-                                       TSrim::log10Emaxpu * Mass(vZ.at(i), vA.at(i))));
+                                       TSrim::log10Emaxpu * amdc::Mass(vZ.at(i), vA.at(i))));
                 for (Int_t j = 0; j < npol + 1; j++) {
                     this->at(self_index).SetParameter(j, vpar[j].at(i));
                 }
