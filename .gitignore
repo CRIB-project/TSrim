@@ -16,6 +16,7 @@ TSrimDict_rdict.pcm
 
 # python
 .venv
+*.lock
 
 # others
 .cmake-format

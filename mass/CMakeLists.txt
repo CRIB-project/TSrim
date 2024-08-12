@@ -1,8 +1,6 @@
 # Mass library
-set(MassLibrary Mass)
-
 add_library(${MassLibrary} SHARED Mass.cc)
-target_compile_options(${MassLibrary} PUBLIC -Wall -Wextra -O2)
+target_compile_options(${MassLibrary} PRIVATE -Wall -Wextra -O2)
 target_include_directories(
   ${MassLibrary} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
                         $<INSTALL_INTERFACE:include>)

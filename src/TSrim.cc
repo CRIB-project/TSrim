@@ -1,5 +1,5 @@
 #include "TSrim.h"
-#include "Mass.h"
+#include <Mass.h>
 #include <TF1.h>
 #include <TString.h>
 
@@ -433,7 +433,7 @@ void TSrim::AddElement(const char *name, const Int_t npol, const char *datafile,
         if (auto it = mat_mapping.find(mat_str); it != mat_mapping.end()) {
             auto result = self_mapping.emplace(get_key(vZ.at(i), vA.at(i), it->second), self_index);
             if (!result.second) {
-                std::cerr << "(" << vZ.at(i) << ", " << vA.at(i) << ") -> " << mat_str
+                std::cerr << "Z: " << vZ.at(i) << ", A: " << vA.at(i) << ", mat: " << mat_str
                           << " already exists with index: " << result.first->second << std::endl;
             } else {
                 this->emplace_back(TF1(Form("%d-%d_%s", vZ.at(i), vA.at(i), vmat.at(i).Data()),

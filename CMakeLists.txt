@@ -30,8 +30,11 @@ list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
 find_package(ROOT REQUIRED)
 include(${ROOT_USE_FILE})
 
-add_subdirectory(src_mass)
-add_subdirectory(src_tsrim)
+set(MassLibrary Mass)
+add_subdirectory(mass)
+
+set(SrimLibrary Srim)
+add_subdirectory(src)
 
 # find_package TSrim
 configure_file(templates/${PROJECT_NAME}Config.cmake.in
