@@ -10,7 +10,10 @@ else()
 endif()
 
 # TSrim project setting
-project(TSrim VERSION 0.1.0 LANGUAGES CXX)
+project(
+  TSrim
+  VERSION 0.1.0
+  LANGUAGES CXX)
 
 # Default installation dir
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)

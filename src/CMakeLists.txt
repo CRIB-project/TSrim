@@ -1,9 +1,8 @@
 # TSrim library
-add_library(${SrimLibrary} SHARED TSrim.cc ../mass/Mass.cc)
+add_library(${SrimLibrary} SHARED TSrim.cc)
 target_compile_options(${SrimLibrary} PRIVATE -Wall -Wextra -O2)
 target_include_directories(
   ${SrimLibrary} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-                        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/mass>
                         $<INSTALL_INTERFACE:include>)
 
 target_link_libraries(${SrimLibrary} ${ROOT_LIBRARIES} ${MassLibrary})
