@@ -49,7 +49,9 @@ NB_MODULE(pyTSrim, m) {
         .def("ELossToThkPu", nb::overload_cast<Int_t, Int_t, Double_t, Double_t, const std::string &, Double_t, Double_t>(&TSrim::ELossToThkPu))
         .def("ShowMatList", &TSrim::ShowMatList)
         .def("ShowMatNuclList", &TSrim::ShowMatNuclList)
-        .def("AddElement", [](TSrim &self, const char *name, const Int_t npol, const char *datafile, Int_t Z = -1, Int_t A = -1, Int_t Zmax = -1, Int_t Amax = -1) { self.AddElement(name, npol, datafile, Z, A, Zmax, Amax); }, nb::arg("name"), nb::arg("npol"), nb::arg("datafile"), nb::arg("Z") = -1, nb::arg("A") = -1, nb::arg("Zmax") = -1, nb::arg("Amax") = -1)
+        .def("AddElement", nb::overload_cast<const char *, const Int_t, const char *>(&TSrim::AddElement))
+        .def("AddElement", nb::overload_cast<const char *, const Int_t, const char *, Int_t, Int_t>(&TSrim::AddElement))
+        .def("AddElement", nb::overload_cast<const char *, const Int_t, const char *, Int_t, Int_t, Int_t, Int_t>(&TSrim::AddElement))
         .def("GetNmaterial", &TSrim::GetNmaterial);
 
     m.doc() = "python extention of TSrim";

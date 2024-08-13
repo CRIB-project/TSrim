@@ -347,8 +347,15 @@ void TSrim::ShowMatNuclList() {
     }
 }
 
+void TSrim::AddElement(const char *name, const Int_t npol, const char *datafile) {
+    TSrim::AddElement(name, npol, datafile, -1, -1, -1, -1);
+}
 void TSrim::AddElement(const char *name, const Int_t npol, const char *datafile,
-                       Int_t Z, Int_t A, Int_t Zmax, Int_t Amax) {
+                       Int_t Z, Int_t A) {
+    TSrim::AddElement(name, npol, datafile, Z, A, -1, -1);
+}
+void TSrim::AddElement(const char *name, const Int_t npol, const char *datafile,
+                       Int_t Zmin, Int_t Amin, Int_t Zmax, Int_t Amax) {
     TString fn_name = Form("pol%d", npol);
     Double_t dummy;
     Int_t Zdat, Adat;
@@ -376,12 +383,12 @@ void TSrim::AddElement(const char *name, const Int_t npol, const char *datafile,
         if (fpar.eof())
             break;
 
-        if (Z == -1 && A == -1 && Zmax == -1 && Amax == -1) {
+        if (Zmin == -1 && Amin == -1 && Zmax == -1 && Amax == -1) {
             addData(Zdat, Adat, mat, par);
-        } else if (Z != -1 && A != -1 && Zdat == Z && Adat == A) {
+        } else if (Zmin != -1 && Amin != -1 && Zdat == Zmin && Adat == Amin) {
             addData(Zdat, Adat, mat, par);
             break;
-        } else if (Zdat >= Z && Adat >= A && Zdat <= Zmax && Adat <= Amax) {
+        } else if (Zdat >= Zmin && Adat >= Amin && Zdat <= Zmax && Adat <= Amax) {
             addData(Zdat, Adat, mat, par);
         }
     }

@@ -103,8 +103,11 @@ class TSrim : public std::vector<TF1> {
     //////////////////////////////////////////////////////////////////////////
 
     /// @brief Add elements to itself
+    void AddElement(const char *name, const Int_t npol, const char *datafile);
     void AddElement(const char *name, const Int_t npol, const char *datafile,
-                    Int_t Z = -1, Int_t A = -1, Int_t Zmax = -1, Int_t Amax = -1);
+                    Int_t Z, Int_t A);
+    void AddElement(const char *name, const Int_t npol, const char *datafile,
+                    Int_t Zmin, Int_t Amin, Int_t Zmax, Int_t Amax);
 
     Int_t GetNmaterial() const { return Nmat; }
 
