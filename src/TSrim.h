@@ -19,82 +19,82 @@ class TSrim : public std::vector<TF1> {
     virtual ~TSrim() = default;
     //////////////////////////////////////////////////////////////////////////
     // Range in a material of an ion at an energy
-    Double_t Range(Int_t Z, Int_t A, Double_t E, TString mat);
-    Double_t Range(Int_t Z, Int_t A, Double_t E, TString mat,
+    Double_t Range(Int_t Z, Int_t A, Double_t E, const std::string &mat);
+    Double_t Range(Int_t Z, Int_t A, Double_t E, const std::string &mat,
                    Double_t P, Double_t T); // for gas
     // Energy per nucleon
-    Double_t RangePu(Int_t Z, Int_t A, Double_t Epu, TString mat);
-    Double_t RangePu(Int_t Z, Int_t A, Double_t Epu, TString mat,
+    Double_t RangePu(Int_t Z, Int_t A, Double_t Epu, const std::string &mat);
+    Double_t RangePu(Int_t Z, Int_t A, Double_t Epu, const std::string &mat,
                      Double_t P, Double_t T); // for gas
     //////////////////////////////////////////////////////////////////////////
     // Energy for a specified range in a material of an ion
-    Double_t RangeToE(Int_t Z, Int_t A, TString mat, Double_t thk);
-    Double_t RangeToE(Int_t Z, Int_t A, TString mat, Double_t thk,
+    Double_t RangeToE(Int_t Z, Int_t A, const std::string &mat, Double_t thk);
+    Double_t RangeToE(Int_t Z, Int_t A, const std::string &mat, Double_t thk,
                       Double_t P, Double_t T); // for gas
     // Energy per nucleon
-    Double_t RangeToEPu(Int_t Z, Int_t A, TString mat, Double_t thk);
-    Double_t RangeToEPu(Int_t Z, Int_t A, TString mat, Double_t thk,
+    Double_t RangeToEPu(Int_t Z, Int_t A, const std::string &mat, Double_t thk);
+    Double_t RangeToEPu(Int_t Z, Int_t A, const std::string &mat, Double_t thk,
                         Double_t P, Double_t T); // for gas
     //////////////////////////////////////////////////////////////////////////
     // Energy of an ion after a material with a specified thickness
-    Double_t EnergyNew(Int_t Z, Int_t A, Double_t Eold, TString mat, Double_t thk);
-    Double_t EnergyNew(Int_t Z, Int_t A, Double_t Eold, TString mat, Double_t thk,
+    Double_t EnergyNew(Int_t Z, Int_t A, Double_t Eold, const std::string &mat, Double_t thk);
+    Double_t EnergyNew(Int_t Z, Int_t A, Double_t Eold, const std::string &mat, Double_t thk,
                        Double_t P, Double_t T); // for gas
     // Energy per nucleon
-    Double_t EnergyNewPu(Int_t Z, Int_t A, Double_t Eoldpu, TString mat, Double_t thk);
-    Double_t EnergyNewPu(Int_t Z, Int_t A, Double_t Eoldpu, TString mat, Double_t thk,
+    Double_t EnergyNewPu(Int_t Z, Int_t A, Double_t Eoldpu, const std::string &mat, Double_t thk);
+    Double_t EnergyNewPu(Int_t Z, Int_t A, Double_t Eoldpu, const std::string &mat, Double_t thk,
                          Double_t P, Double_t T); // for gas
     // Aliases
-    Double_t ENew(Int_t Z, Int_t A, Double_t Eold, TString mat, Double_t thk);
-    Double_t ENew(Int_t Z, Int_t A, Double_t Eold, TString mat, Double_t thk,
+    Double_t ENew(Int_t Z, Int_t A, Double_t Eold, const std::string &mat, Double_t thk);
+    Double_t ENew(Int_t Z, Int_t A, Double_t Eold, const std::string &mat, Double_t thk,
                   Double_t P, Double_t T); // for gas
     // Aliases
-    Double_t ENewPu(Int_t Z, Int_t A, Double_t Eoldpu, TString mat, Double_t thk);
-    Double_t ENewPu(Int_t Z, Int_t A, Double_t Eoldpu, TString mat, Double_t thk,
+    Double_t ENewPu(Int_t Z, Int_t A, Double_t Eoldpu, const std::string &mat, Double_t thk);
+    Double_t ENewPu(Int_t Z, Int_t A, Double_t Eoldpu, const std::string &mat, Double_t thk,
                     Double_t P, Double_t T); // for gas
     //////////////////////////////////////////////////////////////////////////
     // Energy loss of an ion in a material with a specified thickness
-    Double_t EnergyLoss(Int_t Z, Int_t A, Double_t Eold, TString mat, Double_t thk);
-    Double_t EnergyLoss(Int_t Z, Int_t A, Double_t Eold, TString mat, Double_t thk,
+    Double_t EnergyLoss(Int_t Z, Int_t A, Double_t Eold, const std::string &mat, Double_t thk);
+    Double_t EnergyLoss(Int_t Z, Int_t A, Double_t Eold, const std::string &mat, Double_t thk,
                         Double_t P, Double_t T); // for gas
     // Energy per nucleon
-    Double_t EnergyLossPu(Int_t Z, Int_t A, Double_t Eoldpu, TString mat, Double_t thk);
-    Double_t EnergyLossPu(Int_t Z, Int_t A, Double_t Eoldpu, TString mat, Double_t thk,
+    Double_t EnergyLossPu(Int_t Z, Int_t A, Double_t Eoldpu, const std::string &mat, Double_t thk);
+    Double_t EnergyLossPu(Int_t Z, Int_t A, Double_t Eoldpu, const std::string &mat, Double_t thk,
                           Double_t P, Double_t T); // for gas
     // Aliases
-    Double_t ELoss(Int_t Z, Int_t A, Double_t Eold, TString mat, Double_t thk);
-    Double_t ELoss(Int_t Z, Int_t A, Double_t Eold, TString mat, Double_t thk,
+    Double_t ELoss(Int_t Z, Int_t A, Double_t Eold, const std::string &mat, Double_t thk);
+    Double_t ELoss(Int_t Z, Int_t A, Double_t Eold, const std::string &mat, Double_t thk,
                    Double_t P, Double_t T); // for gas
     // Aliases
-    Double_t ELossPu(Int_t Z, Int_t A, Double_t Eoldpu, TString mat, Double_t thk);
-    Double_t ELossPu(Int_t Z, Int_t A, Double_t Eoldpu, TString mat, Double_t thk,
+    Double_t ELossPu(Int_t Z, Int_t A, Double_t Eoldpu, const std::string &mat, Double_t thk);
+    Double_t ELossPu(Int_t Z, Int_t A, Double_t Eoldpu, const std::string &mat, Double_t thk,
                      Double_t P, Double_t T); // for gas
     //////////////////////////////////////////////////////////////////////////
     // Thickness for energies before and after a material
     Double_t EnergiesToThick(Int_t Z, Int_t A, Double_t Eold, Double_t Enew,
-                             TString mat);
+                             const std::string &mat);
     Double_t EnergiesToThick(Int_t Z, Int_t A, Double_t Eold, Double_t Enew,
-                             TString mat, Double_t P, Double_t T); // for gas
+                             const std::string &mat, Double_t P, Double_t T); // for gas
     Double_t EnergiesToThickPu(Int_t Z, Int_t A, Double_t Eoldpu, Double_t Enewpu,
-                               TString mat);
+                               const std::string &mat);
     Double_t EnergiesToThickPu(Int_t Z, Int_t A, Double_t Eoldpu, Double_t Enewpu,
-                               TString mat, Double_t P, Double_t T); // for gas
-    Double_t EToThk(Int_t Z, Int_t A, Double_t Eold, Double_t Enew, TString mat);
-    Double_t EToThk(Int_t Z, Int_t A, Double_t Eold, Double_t Enew, TString mat,
+                               const std::string &mat, Double_t P, Double_t T); // for gas
+    Double_t EToThk(Int_t Z, Int_t A, Double_t Eold, Double_t Enew, const std::string &mat);
+    Double_t EToThk(Int_t Z, Int_t A, Double_t Eold, Double_t Enew, const std::string &mat,
                     Double_t P, Double_t T); // for gas
     Double_t EToThkPu(Int_t Z, Int_t A, Double_t Eoldpu, Double_t Enewpu,
-                      TString mat);
+                      const std::string &mat);
     Double_t EToThkPu(Int_t Z, Int_t A, Double_t Eoldpu, Double_t Enewpu,
-                      TString mat, Double_t P, Double_t T); // for gas
+                      const std::string &mat, Double_t P, Double_t T); // for gas
     // Thickness for an incident energy and energy loss in a material
     Double_t ELossToThk(Int_t Z, Int_t A, Double_t Eold, Double_t dE,
-                        TString mat);
-    Double_t ELossToThk(Int_t Z, Int_t A, Double_t Eold, Double_t dE, TString mat,
+                        const std::string &mat);
+    Double_t ELossToThk(Int_t Z, Int_t A, Double_t Eold, Double_t dE, const std::string &mat,
                         Double_t P, Double_t T); // for gas
     Double_t ELossToThkPu(Int_t Z, Int_t A, Double_t Eoldpu, Double_t dEpu,
-                          TString mat);
+                          const std::string &mat);
     Double_t ELossToThkPu(Int_t Z, Int_t A, Double_t Eoldpu, Double_t dEpu,
-                          TString mat, Double_t P, Double_t T); // for gas
+                          const std::string &mat, Double_t P, Double_t T); // for gas
     //////////////////////////////////////////////////////////////////////////
     // To show material list
     void ShowMatList();
