@@ -18,5 +18,5 @@ TSrimDict_rdict.pcm
 .venv
 *.lock
 
-# others
-.cmake-format
+# doxygen
+doc
