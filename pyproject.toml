@@ -6,11 +6,10 @@ license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.8"
+python = ">=3.9"
 nanobind = "^2.1.0"
-
-[tool.poetry.group.dev.dependencies]
-nanobind = "^2.1.0"
+requests = "^2.32.3"
+pandas = "^2.2.2"
 
 [build-system]
 requires = ["poetry-core"]
