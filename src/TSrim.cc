@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <utility>
 
 /*
   Thickness in mm
@@ -23,17 +24,49 @@
 
 ClassImp(TSrim);
 ///////////////////////////////////////////////////////////////////////////////
-TSrim::TSrim() : Nmat(0) {};
+TSrim::TSrim() : Nmat(0) {
+}
 TSrim::TSrim(const char *name, const Int_t npol, const char *datafile) : Nmat(0) {
     TSrim::AddElement(name, npol, datafile);
-};
+}
 TSrim::TSrim(const char *name, const Int_t npol, const char *datafile, Int_t Z, Int_t A) : Nmat(0) {
     TSrim::AddElement(name, npol, datafile, Z, A);
-};
+}
 TSrim::TSrim(const char *name, const Int_t npol, const char *datafile,
              Int_t Zmin, Int_t Amin, Int_t Zmax, Int_t Amax) : Nmat(0) {
     TSrim::AddElement(name, npol, datafile, Zmin, Amin, Zmax, Amax);
-};
+}
+
+TSrim::TSrim(const TSrim &rhs)
+    : std::vector<TF1>(rhs),
+      Nmat(rhs.Nmat),
+      mat_mapping(rhs.mat_mapping),
+      self_mapping(rhs.self_mapping) {
+}
+TSrim::TSrim(TSrim &&rhs) noexcept
+    : std::vector<TF1>(std::move(rhs)),
+      Nmat(std::move(rhs.Nmat)),
+      mat_mapping(std::move(rhs.mat_mapping)),
+      self_mapping(std::move(rhs.self_mapping)) {
+}
+TSrim &TSrim::operator=(const TSrim &rhs) {
+    if (this != &rhs) {
+        std::vector<TF1>::operator=(rhs);
+        Nmat = rhs.Nmat;
+        mat_mapping = rhs.mat_mapping;
+        self_mapping = rhs.self_mapping;
+    }
+    return *this;
+}
+TSrim &TSrim::operator=(TSrim &&rhs) noexcept {
+    if (this != &rhs) {
+        std::vector<TF1>::operator=(std::move(rhs));
+        Nmat = std::move(rhs.Nmat);
+        mat_mapping = std::move(rhs.mat_mapping);
+        self_mapping = std::move(rhs.self_mapping);
+    }
+    return *this;
+}
 ///////////////////////////////////////////////////////////////////////////////
 Double_t TSrim::Range(Int_t Z, Int_t A, Double_t E, const std::string &mat) {
     if (E <= TSrim::Emin) {

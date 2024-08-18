@@ -17,6 +17,21 @@ class TSrim : public std::vector<TF1> {
     TSrim(const char *name, const Int_t npol, const char *datafile,
           Int_t Zmin, Int_t Amin, Int_t Zmax, Int_t Amax);
     virtual ~TSrim() = default;
+
+    /// @brief copy constructor
+    /// @param rhs
+    TSrim(const TSrim &rhs);
+    /// @brief move constructor
+    /// @param rhs
+    TSrim(TSrim &&rhs) noexcept;
+    /// @brief copy assignment operator
+    /// @param rhs
+    /// @return TSrim object
+    TSrim &operator=(const TSrim &rhs);
+    /// @brief move assignment operator
+    /// @param rhs
+    /// @return TSrim object
+    TSrim &operator=(TSrim &&rhs) noexcept;
     //////////////////////////////////////////////////////////////////////////
     // Range in a material of an ion at an energy
     Double_t Range(Int_t Z, Int_t A, Double_t E, const std::string &mat);
@@ -111,9 +126,12 @@ class TSrim : public std::vector<TF1> {
 
     Int_t GetNmaterial() const { return Nmat; }
 
-  private:
-    const Double_t T0 = 273.15;
+    /// @brief default pressure
     const Double_t P1 = 760.;
+    /// @brief default temperature
+    const Double_t T0 = 273.15;
+
+  private:
     const Double_t Emin = 0.001;  // MeV
     const Double_t Emaxpu = 400.; // MeV/u
     const Double_t log10Emin = log10(Emin);

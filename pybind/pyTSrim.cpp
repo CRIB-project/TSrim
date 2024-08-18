@@ -52,7 +52,9 @@ NB_MODULE(pyTSrim, m) {
         .def("AddElement", nb::overload_cast<const char *, const Int_t, const char *>(&TSrim::AddElement))
         .def("AddElement", nb::overload_cast<const char *, const Int_t, const char *, Int_t, Int_t>(&TSrim::AddElement))
         .def("AddElement", nb::overload_cast<const char *, const Int_t, const char *, Int_t, Int_t, Int_t, Int_t>(&TSrim::AddElement))
-        .def("GetNmaterial", &TSrim::GetNmaterial);
+        .def("GetNmaterial", &TSrim::GetNmaterial)
+        .def_ro("P1", &TSrim::P1)
+        .def_ro("T0", &TSrim::T0);
 
     m.doc() = "python extention of TSrim";
 }
