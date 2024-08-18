@@ -127,9 +127,9 @@ class TSrim : public std::vector<TF1> {
     Int_t GetNmaterial() const { return Nmat; }
 
     /// @brief default pressure
-    const Double_t P1 = 760.;
+    static constexpr Double_t P1 = 760.;
     /// @brief default temperature
-    const Double_t T0 = 273.15;
+    static constexpr Double_t T0 = 273.15;
 
   private:
     const Double_t Emin = 0.001;  // MeV

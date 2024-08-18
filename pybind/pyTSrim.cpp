@@ -6,10 +6,10 @@ namespace nb = nanobind;
 
 NB_MODULE(pyTSrim, m) {
     nb::class_<TSrim>(m, "TSrim")
-        .def(nb::init<>())
-        .def(nb::init<const char *, const Int_t, const char *>())
-        .def(nb::init<const char *, const Int_t, const char *, Int_t, Int_t>())
-        .def(nb::init<const char *, const Int_t, const char *, Int_t, Int_t, Int_t, Int_t>())
+        .def(nb::init<>(), nb::rv_policy::take_ownership)
+        .def(nb::init<const char *, const Int_t, const char *>(), nb::rv_policy::take_ownership)
+        .def(nb::init<const char *, const Int_t, const char *, Int_t, Int_t>(), nb::rv_policy::take_ownership)
+        .def(nb::init<const char *, const Int_t, const char *, Int_t, Int_t, Int_t, Int_t>(), nb::rv_policy::take_ownership)
         // Method bindings
         .def("Range", nb::overload_cast<Int_t, Int_t, Double_t, const std::string &>(&TSrim::Range))
         .def("Range", nb::overload_cast<Int_t, Int_t, Double_t, const std::string &, Double_t, Double_t>(&TSrim::Range))
@@ -52,9 +52,10 @@ NB_MODULE(pyTSrim, m) {
         .def("AddElement", nb::overload_cast<const char *, const Int_t, const char *>(&TSrim::AddElement))
         .def("AddElement", nb::overload_cast<const char *, const Int_t, const char *, Int_t, Int_t>(&TSrim::AddElement))
         .def("AddElement", nb::overload_cast<const char *, const Int_t, const char *, Int_t, Int_t, Int_t, Int_t>(&TSrim::AddElement))
-        .def("GetNmaterial", &TSrim::GetNmaterial)
-        .def_ro("P1", &TSrim::P1)
-        .def_ro("T0", &TSrim::T0);
+        .def("GetNmaterial", &TSrim::GetNmaterial);
+
+    m.attr("P1") = nb::float_(TSrim::P1);
+    m.attr("T0") = nb::float_(TSrim::T0);
 
     m.doc() = "python extention of TSrim";
 }
