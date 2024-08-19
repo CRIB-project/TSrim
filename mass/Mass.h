@@ -5,7 +5,7 @@
 #include <string>
 
 namespace amdc {
-const double amu = 931.478;
+constexpr double amu = 931.478;
 
 constexpr int maxZ = 118;
 constexpr int maxA = 295;

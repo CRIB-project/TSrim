@@ -14,5 +14,7 @@ NB_MODULE(pyMass, m) {
     m.def("GetEl", &amdc::GetEl, "Get the element symbol from the atomic number");
     m.def("GetZ", &amdc::GetZ, "Get the atomic number from the element symbol");
 
+    m.attr("amu") = nb::float_(amdc::amu);
+
     m.doc() = "amdc Mass table";
 }
