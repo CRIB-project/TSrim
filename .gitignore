@@ -16,7 +16,6 @@ TSrimDict_rdict.pcm
 
 # python
 .venv
-*.lock
 
 # doxygen
 doc
