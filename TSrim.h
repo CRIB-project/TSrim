@@ -16,7 +16,7 @@ class TSrim : public std::vector<TF1> {
           Int_t Z, Int_t A);
     TSrim(const char *name, const Int_t npol, const char *datafile,
           Int_t Zmin, Int_t Amin, Int_t Zmax, Int_t Amax);
-    virtual ~TSrim();
+    virtual ~TSrim() = default;
     //////////////////////////////////////////////////////////////////////////
     // Range in a material of an ion at an energy
     Double_t Range(Int_t Z, Int_t A, Double_t E, TString mat);
@@ -111,9 +111,10 @@ class TSrim : public std::vector<TF1> {
 
     Int_t GetNmaterial() const { return Nmat; }
 
+    static constexpr Double_t T0 = 273.15;
+    static constexpr Double_t P1 = 760.;
+
   private:
-    const Double_t T0 = 273.15;
-    const Double_t P1 = 760.;
     const Double_t Emin = 0.001;  // MeV
     const Double_t Emaxpu = 400.; // MeV/u
     const Double_t log10Emin = log10(Emin);
