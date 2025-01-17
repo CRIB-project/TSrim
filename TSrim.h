@@ -111,9 +111,10 @@ class TSrim : public std::vector<TF1> {
 
     Int_t GetNmaterial() const { return Nmat; }
 
+    static constexpr Double_t T0 = 273.15;
+    static constexpr Double_t P1 = 760.;
+
   private:
-    const Double_t T0 = 273.15;
-    const Double_t P1 = 760.;
     const Double_t Emin = 0.001;  // MeV
     const Double_t Emaxpu = 400.; // MeV/u
     const Double_t log10Emin = log10(Emin);
