@@ -189,7 +189,6 @@ TSrim::TSrim(const char *name, const Int_t npol, const char *datafile,
         }
     }
 };
-TSrim::~TSrim() {}
 ///////////////////////////////////////////////////////////////////////////////
 Double_t TSrim::Range(Int_t Z, Int_t A, Double_t E, TString mat) {
     if (E <= TSrim::Emin) {

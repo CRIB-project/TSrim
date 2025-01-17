@@ -16,7 +16,7 @@ class TSrim : public std::vector<TF1> {
           Int_t Z, Int_t A);
     TSrim(const char *name, const Int_t npol, const char *datafile,
           Int_t Zmin, Int_t Amin, Int_t Zmax, Int_t Amax);
-    virtual ~TSrim();
+    virtual ~TSrim() = default;
     //////////////////////////////////////////////////////////////////////////
     // Range in a material of an ion at an energy
     Double_t Range(Int_t Z, Int_t A, Double_t E, TString mat);
