@@ -24,171 +24,18 @@ using namespace amdc;
 
 ClassImp(TSrim);
 ///////////////////////////////////////////////////////////////////////////////
-TSrim::TSrim() : Nmat(0) {};
+TSrim::TSrim() : Nmat(0) {
+}
 TSrim::TSrim(const char *name, const Int_t npol, const char *datafile) : Nmat(0) {
-    TString fn_name = Form("pol%d", npol);
-    Double_t dummy;
-    Int_t Z, A;
-    TString mat;
-    Double_t par[npol + 1];
-    vector<Int_t> vZ, vA;
-    vector<TString> vmat;
-    vector<Double_t> vpar[npol + 1];
-    std::ifstream fpar(datafile);
-    while (!fpar.eof()) {
-        fpar >> Z >> A >> mat;
-        for (Int_t j = 0; j < npol + 1; j++)
-            fpar >> par[j];
-        fpar >> dummy >> dummy;
-        if (fpar.eof())
-            break;
-        vZ.emplace_back(Z);
-        vA.emplace_back(A);
-        vmat.emplace_back(mat);
-        for (Int_t j = 0; j < npol + 1; j++)
-            vpar[j].emplace_back(par[j]);
-    }
-    fpar.close();
-    if (vZ.size() == 0) {
-        std::cout << "No isotope data loaded." << std::endl;
-    }
-
-    Int_t self_index = 0;
-    for (Size_t i = 0; i < vZ.size(); i++) {
-        /// register the mapping
-        // Do nothing if the key already exists
-        auto mat_result = mat_mapping.insert({std::string(vmat.at(i).Data()), Nmat});
-        if (mat_result.second)
-            Nmat++;
-
-        if (auto it = mat_mapping.find(std::string(vmat.at(i).Data())); it != mat_mapping.end()) {
-            auto result = self_mapping.insert({get_key(vZ.at(i), vA.at(i), it->second), self_index});
-            if (!result.second) {
-                std::cerr << "Key already exists with index: " << result.first->second << std::endl;
-            } else {
-                this->emplace_back(TF1(Form("%d-%d_%s", vZ.at(i), vA.at(i), vmat.at(i).Data()),
-                                       fn_name.Data(), TSrim::log10Emin,
-                                       TSrim::log10Emaxpu * Mass(Z, A)));
-                for (Int_t j = 0; j < npol + 1; j++) {
-                    this->at(self_index).SetParameter(j, vpar[j].at(i));
-                }
-                self_index++;
-            }
-        }
-    }
-    // TSrim(name, npol, datafile, 1, 1, 20, 40);
-};
+    TSrim::AddElement(name, npol, datafile);
+}
 TSrim::TSrim(const char *name, const Int_t npol, const char *datafile, Int_t Z, Int_t A) : Nmat(0) {
-    TString fn_name = Form("pol%d", npol);
-    Double_t dummy;
-    Int_t Zdat, Adat;
-    TString mat;
-    Double_t par[npol + 1];
-    vector<Int_t> vZ, vA;
-    vector<TString> vmat;
-    vector<Double_t> vpar[npol + 1];
-    std::ifstream fpar(datafile);
-    while (!fpar.eof()) {
-        fpar >> Zdat >> Adat >> mat;
-        for (Int_t j = 0; j < npol + 1; j++)
-            fpar >> par[j];
-        fpar >> dummy >> dummy;
-        if (fpar.eof()) {
-            break;
-        }
-        if (Zdat == Z && Adat == A) {
-            vZ.emplace_back(Z);
-            vA.emplace_back(A);
-            vmat.emplace_back(mat);
-            for (Int_t j = 0; j < npol + 1; j++)
-                vpar[j].emplace_back(par[j]);
-            break;
-        }
-    }
-    fpar.close();
-    if (vZ.size() == 0) {
-        std::cout << "No isotope data loaded." << std::endl;
-    }
-
-    Int_t self_index = 0;
-    for (Size_t i = 0; i < vZ.size(); i++) {
-        /// register the mapping
-        // Do nothing if the key already exists
-        auto mat_result = mat_mapping.insert({std::string(vmat.at(i).Data()), Nmat});
-        if (mat_result.second)
-            Nmat++;
-
-        if (auto it = mat_mapping.find(std::string(vmat.at(i).Data())); it != mat_mapping.end()) {
-            auto result = self_mapping.insert({get_key(vZ.at(i), vA.at(i), it->second), self_index});
-            if (!result.second) {
-                std::cerr << "Key already exists with index: " << result.first->second << std::endl;
-            } else {
-                this->emplace_back(TF1(Form("%d-%d_%s", vZ.at(i), vA.at(i), vmat.at(i).Data()),
-                                       fn_name.Data(), TSrim::log10Emin,
-                                       TSrim::log10Emaxpu * Mass(Z, A)));
-                for (Int_t j = 0; j < npol + 1; j++) {
-                    this->at(self_index).SetParameter(j, vpar[j].at(i));
-                }
-                self_index++;
-            }
-        }
-    }
-};
+    TSrim::AddElement(name, npol, datafile, Z, A);
+}
 TSrim::TSrim(const char *name, const Int_t npol, const char *datafile,
              Int_t Zmin, Int_t Amin, Int_t Zmax, Int_t Amax) : Nmat(0) {
-    TString fn_name = Form("pol%d", npol);
-    Double_t dummy;
-    Int_t Z, A;
-    TString mat;
-    Double_t par[npol + 1];
-    vector<Int_t> vZ, vA;
-    vector<TString> vmat;
-    vector<Double_t> vpar[npol + 1];
-    std::ifstream fpar(datafile);
-    while (!fpar.eof()) {
-        fpar >> Z >> A >> mat;
-        for (Int_t j = 0; j < npol + 1; j++)
-            fpar >> par[j];
-        fpar >> dummy >> dummy;
-        if (fpar.eof())
-            break;
-        if (Z >= Zmin && A >= Amin && Z <= Zmax && A <= Amax) {
-            vZ.emplace_back(Z);
-            vA.emplace_back(A);
-            vmat.emplace_back(mat);
-            for (Int_t j = 0; j < npol + 1; j++)
-                vpar[j].emplace_back(par[j]);
-        }
-    }
-    fpar.close();
-    if (vZ.size() == 0) {
-        std::cout << "No isotope data loaded." << std::endl;
-    }
-
-    Int_t self_index = 0;
-    for (Size_t i = 0; i < vZ.size(); i++) {
-        /// register the mapping
-        // Do nothing if the key already exists
-        auto mat_result = mat_mapping.insert({std::string(vmat.at(i).Data()), Nmat});
-        if (mat_result.second)
-            Nmat++;
-
-        if (auto it = mat_mapping.find(std::string(vmat.at(i).Data())); it != mat_mapping.end()) {
-            auto result = self_mapping.insert({get_key(vZ.at(i), vA.at(i), it->second), self_index});
-            if (!result.second) {
-                std::cerr << "Key already exists with index: " << result.first->second << std::endl;
-            } else {
-                this->emplace_back(TF1(Form("%d-%d_%s", vZ.at(i), vA.at(i), vmat.at(i).Data()),
-                                       fn_name.Data(), TSrim::log10Emin,
-                                       TSrim::log10Emaxpu * Mass(Z, A)));
-                for (Int_t j = 0; j < npol + 1; j++) {
-                    this->at(self_index).SetParameter(j, vpar[j].at(i));
-                }
-                self_index++;
-            }
-        }
-    }
-};
+    TSrim::AddElement(name, npol, datafile, Zmin, Amin, Zmax, Amax);
+}
 ///////////////////////////////////////////////////////////////////////////////
 Double_t TSrim::Range(Int_t Z, Int_t A, Double_t E, TString mat) {
     if (E <= TSrim::Emin) {
@@ -580,140 +427,48 @@ void TSrim::ShowMatNuclList() {
 }
 
 void TSrim::AddElement(const char *name, const Int_t npol, const char *datafile) {
-    TString fn_name = Form("pol%d", npol);
-    Double_t dummy;
-    Int_t Z, A;
-    TString mat;
-    Double_t par[npol + 1];
-    vector<Int_t> vZ, vA;
-    vector<TString> vmat;
-    vector<Double_t> vpar[npol + 1];
-    std::ifstream fpar(datafile);
-    while (!fpar.eof()) {
-        fpar >> Z >> A >> mat;
-        for (Int_t j = 0; j < npol + 1; j++)
-            fpar >> par[j];
-        fpar >> dummy >> dummy;
-        if (fpar.eof())
-            break;
-        vZ.emplace_back(Z);
-        vA.emplace_back(A);
-        vmat.emplace_back(mat);
-        for (Int_t j = 0; j < npol + 1; j++)
-            vpar[j].emplace_back(par[j]);
-    }
-    fpar.close();
-    if (vZ.size() == 0) {
-        std::cout << "No isotope data loaded." << std::endl;
-    }
-
-    Int_t self_index = this->size();
-    for (Size_t i = 0; i < vZ.size(); i++) {
-        /// register the mapping
-        // Do nothing if the key already exists
-        auto mat_result = mat_mapping.insert({std::string(vmat.at(i).Data()), Nmat});
-        if (mat_result.second)
-            Nmat++;
-
-        if (auto it = mat_mapping.find(std::string(vmat.at(i).Data())); it != mat_mapping.end()) {
-            auto result = self_mapping.insert({get_key(vZ.at(i), vA.at(i), it->second), self_index});
-            if (!result.second) {
-                std::cerr << "Key already exists with index: " << result.first->second << std::endl;
-            } else {
-                this->emplace_back(TF1(Form("%d-%d_%s", vZ.at(i), vA.at(i), vmat.at(i).Data()),
-                                       fn_name.Data(), TSrim::log10Emin,
-                                       TSrim::log10Emaxpu * Mass(Z, A)));
-                for (Int_t j = 0; j < npol + 1; j++) {
-                    this->at(self_index).SetParameter(j, vpar[j].at(i));
-                }
-                self_index++;
-            }
-        }
-    }
+    TSrim::AddElement(name, npol, datafile, -1, -1, -1, -1);
 }
-
 void TSrim::AddElement(const char *name, const Int_t npol, const char *datafile,
                        Int_t Z, Int_t A) {
+    TSrim::AddElement(name, npol, datafile, Z, A, -1, -1);
+}
+void TSrim::AddElement(const char *name, const Int_t npol, const char *datafile,
+                       Int_t Zmin, Int_t Amin, Int_t Zmax, Int_t Amax) {
     TString fn_name = Form("pol%d", npol);
     Double_t dummy;
     Int_t Zdat, Adat;
-    TString mat;
+    std::string mat;
     Double_t par[npol + 1];
     vector<Int_t> vZ, vA;
-    vector<TString> vmat;
+    vector<std::string> vmat;
     vector<Double_t> vpar[npol + 1];
+
+    auto addData = [&](Int_t Zdat, Int_t Adat, const std::string &mat, const Double_t *par) {
+        vZ.emplace_back(Zdat);
+        vA.emplace_back(Adat);
+        vmat.emplace_back(mat);
+        for (Int_t j = 0; j < npol + 1; ++j) {
+            vpar[j].emplace_back(par[j]);
+        }
+    };
+
     std::ifstream fpar(datafile);
     while (!fpar.eof()) {
         fpar >> Zdat >> Adat >> mat;
         for (Int_t j = 0; j < npol + 1; j++)
             fpar >> par[j];
         fpar >> dummy >> dummy;
-        if (fpar.eof()) {
-            break;
-        }
-        if (Zdat == Z && Adat == A) {
-            vZ.emplace_back(Z);
-            vA.emplace_back(A);
-            vmat.emplace_back(mat);
-            for (Int_t j = 0; j < npol + 1; j++)
-                vpar[j].emplace_back(par[j]);
-            break;
-        }
-    }
-    fpar.close();
-    if (vZ.size() == 0) {
-        std::cout << "No isotope data loaded." << std::endl;
-    }
-
-    Int_t self_index = this->size();
-    for (Size_t i = 0; i < vZ.size(); i++) {
-        /// register the mapping
-        // Do nothing if the key already exists
-        auto mat_result = mat_mapping.insert({std::string(vmat.at(i).Data()), Nmat});
-        if (mat_result.second)
-            Nmat++;
-
-        if (auto it = mat_mapping.find(std::string(vmat.at(i).Data())); it != mat_mapping.end()) {
-            auto result = self_mapping.insert({get_key(vZ.at(i), vA.at(i), it->second), self_index});
-            if (!result.second) {
-                std::cerr << "Key already exists with index: " << result.first->second << std::endl;
-            } else {
-                this->emplace_back(TF1(Form("%d-%d_%s", vZ.at(i), vA.at(i), vmat.at(i).Data()),
-                                       fn_name.Data(), TSrim::log10Emin,
-                                       TSrim::log10Emaxpu * Mass(Z, A)));
-                for (Int_t j = 0; j < npol + 1; j++) {
-                    this->at(self_index).SetParameter(j, vpar[j].at(i));
-                }
-                self_index++;
-            }
-        }
-    }
-}
-
-void TSrim::AddElement(const char *name, const Int_t npol, const char *datafile,
-                       Int_t Zmin, Int_t Amin, Int_t Zmax, Int_t Amax) {
-    TString fn_name = Form("pol%d", npol);
-    Double_t dummy;
-    Int_t Z, A;
-    TString mat;
-    Double_t par[npol + 1];
-    vector<Int_t> vZ, vA;
-    vector<TString> vmat;
-    vector<Double_t> vpar[npol + 1];
-    std::ifstream fpar(datafile);
-    while (!fpar.eof()) {
-        fpar >> Z >> A >> mat;
-        for (Int_t j = 0; j < npol + 1; j++)
-            fpar >> par[j];
-        fpar >> dummy >> dummy;
         if (fpar.eof())
             break;
-        if (Z >= Zmin && A >= Amin && Z <= Zmax && A <= Amax) {
-            vZ.emplace_back(Z);
-            vA.emplace_back(A);
-            vmat.emplace_back(mat);
-            for (Int_t j = 0; j < npol + 1; j++)
-                vpar[j].emplace_back(par[j]);
+
+        if (Zmin == -1 && Amin == -1 && Zmax == -1 && Amax == -1) {
+            addData(Zdat, Adat, mat, par);
+        } else if (Zmin != -1 && Amin != -1 && Zdat == Zmin && Adat == Amin) {
+            addData(Zdat, Adat, mat, par);
+            break;
+        } else if (Zdat >= Zmin && Adat >= Amin && Zdat <= Zmax && Adat <= Amax) {
+            addData(Zdat, Adat, mat, par);
         }
     }
     fpar.close();
@@ -725,18 +480,19 @@ void TSrim::AddElement(const char *name, const Int_t npol, const char *datafile,
     for (Size_t i = 0; i < vZ.size(); i++) {
         /// register the mapping
         // Do nothing if the key already exists
-        auto mat_result = mat_mapping.insert({std::string(vmat.at(i).Data()), Nmat});
+        auto mat_result = mat_mapping.emplace(vmat.at(i), Nmat);
         if (mat_result.second)
             Nmat++;
 
-        if (auto it = mat_mapping.find(std::string(vmat.at(i).Data())); it != mat_mapping.end()) {
-            auto result = self_mapping.insert({get_key(vZ.at(i), vA.at(i), it->second), self_index});
+        if (auto it = mat_mapping.find(vmat.at(i)); it != mat_mapping.end()) {
+            auto result = self_mapping.emplace(get_key(vZ.at(i), vA.at(i), it->second), self_index);
             if (!result.second) {
-                std::cerr << "Key already exists with index: " << result.first->second << std::endl;
+                std::cerr << "Z: " << vZ.at(i) << ", A: " << vA.at(i) << ", mat: " << vmat.at(i)
+                          << " already exists with index: " << result.first->second << std::endl;
             } else {
-                this->emplace_back(TF1(Form("%d-%d_%s", vZ.at(i), vA.at(i), vmat.at(i).Data()),
+                this->emplace_back(TF1(Form("%d-%d_%s", vZ.at(i), vA.at(i), vmat.at(i).c_str()),
                                        fn_name.Data(), TSrim::log10Emin,
-                                       TSrim::log10Emaxpu * Mass(Z, A)));
+                                       TSrim::log10Emaxpu * amdc::Mass(vZ.at(i), vA.at(i))));
                 for (Int_t j = 0; j < npol + 1; j++) {
                     this->at(self_index).SetParameter(j, vpar[j].at(i));
                 }
